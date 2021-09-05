@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--ログイン画面-->
+
+<html lang="ja">
+  <head>
+    <title>Role Select</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- import the webpage's stylesheet -->
+    <!--<link rel="stylesheet" href="/style.css" />-->
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css"/>
+    <link rel="stylesheet" href="./role_select.css" />
+    <!-- Firebase App is always required and must be first -->
+    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
+    <!-- Add additional services that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-auth.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-firestore.js"></script>
+    <script src="./read_firebase.js"></script>
+    <script src="./vote.js"></script>
+    <script src="./login.js"></script>
+    <script src="./utils_lib.js"></script>
+    <script src="./role_select.js"></script>
+    <!-- Your web app's Firebase configuration -->
+    <script type="text/javascript">
+      
+    </script>
+  </head>
+  <body onload="role_select_load()">
+    <div id="wrapper">
+        <h1>ログイン</h1>
+        <p>ようこそ〇〇さん。あなたの役割を選択してください。</p>
+        <button class="role" id="Presenter">Presenter</button>
+        <button class="role" id="Facilitator&Graphicer">Facilitator&Graphicer</button>
+        <button class="role" id="Guest">Guest</button>
+    </div>
+    
+  </body>
+</html>

@@ -376,5 +376,20 @@ setInterval(function(){return loggedin2(firebase)}, 30*1000);
 function PageLoad(){
   console.log("page loaded");
   loggedin2(firebase);
+  let flag = 0;
+  let getlen = new Promise((resolve, reject) => {
+    db.collection('todays_role').doc(getTodayTimestamp().toString()).get().then(function(doc) {
+      for(let i = 0; i < Object.keys(doc.data()).length; i++){
+        if(Object.keys(doc.data())[i] == selfID){
+          flag = 1;
+        }
+      }
+    }).then(() => {
+      if(flag == 0){
+        window.location.href = "./role_select.html";
+      }
+    })
+    resolve();
+  });
   showParticipant(db);
-};
+}
