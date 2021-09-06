@@ -163,6 +163,12 @@ for(var i=0; i<fg_num; i++) {
 }
 text_p_list.push("submit_vote");
 
+// 投票先を取得するための関数。後藤コミットから名前だけ変えてコピペしてきたので後で消す必要がある。
+async function getTodaysRole2(databaseObj) {
+  var docPath = "todays_role/" + getTodayTimestamp().toString() + "/";
+  var data = await getDataFromDB(databaseObj, docPath);
+  return data;
+}
 
 // 投票ボタンを押した時の処理
 async function btn_send(){  
@@ -235,9 +241,52 @@ async function btn_send(){
   //ここで投票済みの人物のリストを作り、下のif文内のvoters_list.indexOf(selfID)<0で投票済みかをチェックする
   voters_list = [];
   await checkRevote();
+
+  // 参加者の役割を見て、すべての候補に投票できているかどうか確認する
+  // まずは、各役割にどの参加者が割り振られているかを表す表をつくる
+  let todaysRole = await getTodaysRole2(db);
+  let p_list = [];
+  let fg_list = [];
+  // 注: todaysRoleのNULLチェックは省略する。
+  for(let i = 0; i < Object.keys(todaysRole).length; i++){
+    if(todaysRole[Object.keys(todaysRole)[i]] == 'Presenter'){
+      p_list.push(Object.keys(todaysRole)[i]);
+    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator&Graphicer'){
+      fg_list.push(Object.keys(todaysRole)[i]);
+    }
+  }
+  
+  // さっきの表を投票者候補として使うには、自分を候補から消す必要がある
+  p_list = p_list.filter(x => x != selfID)
+  fg_list = fg_list.filter(x => x != selfID)
+
+  // 次に、各役割の投票候補すべてに、その役割の候補として投票できているか確認する
+  // 注: 各役割で全員不足なく投票できているからといって、投票が正しいとは限らない。1位を空欄にして投票されてる可能性もある。
+  let p_fg_exact_flag = true;
+  for(let i = 0; i < p_list.length; i++){
+    let p_not_voted = p_list.filter(
+      function(x) {
+        return p_form_value.indexOf(x) == -1
+      }
+    )
+    if (p_not_voted.length > 0) p_fg_exact_flag = false;
+    console.log(p_not_voted);
+  }
+  for(let i = 0; i < fg_list.length; i++){
+    let fg_not_voted = fg_list.filter(
+      function(x) {
+        return fg_form_value.indexOf(x) == -1
+      }
+    )
+    if (fg_not_voted.length > 0) p_fg_exact_flag = false;
+    console.log(fg_not_voted);
+  }
+
+  // TODO: 当日参加者以外への投票を弾きたい。人数合ってれば大丈夫かもしれないけど
   
   if(p_form_value.indexOf(selfID) < 0 && fg_form_value.indexOf(selfID) < 0) {
-    if (multipleCheck <= 0 && p_num_check && fg_num_check && count_p_num != 0 && count_fg_num != 0) {
+    if (multipleCheck <= 0 && p_num_check && fg_num_check && count_p_num != 0 && count_fg_num != 0
+        && p_fg_exact_flag) {
       if (voters_list.indexOf(selfID) < 0){
         //各フォームのデータを成形してfirebaseに送信
         for(let i = 0; i < p_num; i++){
@@ -275,7 +324,8 @@ async function btn_send(){
       }
     }else{
       const checks = document.getElementsByClassName('check');
-      checks[0].innerHTML = "投票先を間違えている可能性があります。全候補に正しく投票してください。";
+      // checks[0].innerHTML = "投票先を間違えている可能性があります。投票候補を見て、すべての候補に正しく投票してください。";
+      checks[0].innerHTML = "自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。";
       //alert('自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。');
     }
   }else{
