@@ -179,8 +179,8 @@ async function btn_send(){
   }
 
   //各テキストボックスの値を記録するための配列。
-  var p_form_value = new Array(5);
-  var fg_form_value = new Array(5);
+  var p_form_value = new Array(p_num);
+  var fg_form_value = new Array(fg_num);
   
   //PとFGの数だけテキストボックスの値を取得
   for(let i=0; i<p_num; i++){
@@ -236,41 +236,51 @@ async function btn_send(){
   voters_list = [];
   await checkRevote();
   
-  if(p_form_value.indexOf(selfID) < 0 && fg_form_value.indexOf(selfID) < 0 && 
-     multipleCheck <= 0 && p_num_check && fg_num_check && count_p_num != 0 && 
-     count_fg_num != 0 && voters_list.indexOf(selfID) < 0){
-    //各フォームのデータを成形してfirebaseに送信
-    for(let i = 0; i < p_num; i++){
-      if(p_form_value[i] != "") {
-        var p_voteData = {
-          votersId: dictMap2.get(selfID),
-          votedId: dictMap2.get(p_form_value[i]),
-          voteRank: i+1,
-          role: "Presentor",
-        };
-        await addVoteData(p_voteData);
-      }
-    }
-    for(let i = 0; i < fg_num; i++){
-      if(fg_form_value[i] != ""){
-        var fg_voteData = {
-          votersId: dictMap2.get(selfID),
-          votedId: dictMap2.get(fg_form_value[i]),
-          voteRank: i+1,
-          role: "Facilitator",
-        };
-        await addVoteData(fg_voteData);
-      }
-    }
+  if(p_form_value.indexOf(selfID) < 0 && fg_form_value.indexOf(selfID) < 0) {
+    if (multipleCheck <= 0 && p_num_check && fg_num_check && count_p_num != 0 && count_fg_num != 0) {
+      if (voters_list.indexOf(selfID) < 0){
+        //各フォームのデータを成形してfirebaseに送信
+        for(let i = 0; i < p_num; i++){
+          if(p_form_value[i] != "") {
+            var p_voteData = {
+              votersId: dictMap2.get(selfID),
+              votedId: dictMap2.get(p_form_value[i]),
+              voteRank: i+1,
+              role: "Presentor",
+            };
+            await addVoteData(p_voteData);
+          }
+        }
+        for(let i = 0; i < fg_num; i++){
+          if(fg_form_value[i] != ""){
+            var fg_voteData = {
+              votersId: dictMap2.get(selfID),
+              votedId: dictMap2.get(fg_form_value[i]),
+              voteRank: i+1,
+              role: "Facilitator",
+            };
+            await addVoteData(fg_voteData);
+          }
+        }
 
-    //投票結果画面へ遷移
-    var move = function(){
-      window.location.href = "result.html"
-    } 
-    setTimeout(move, 1200);
+        //投票結果画面へ遷移
+        var move = function(){
+          window.location.href = "result.html"
+        } 
+        setTimeout(move, 1200);
+      }else{
+        const checks = document.getElementsByClassName('check');
+        checks[0].innerHTML = "再投票している可能性があります。<BR>投票し直したい場合は、システム管理者に連絡してください。";
+        //alert('自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。');
+      }
+    }else{
+      const checks = document.getElementsByClassName('check');
+      checks[0].innerHTML = "投票先を間違えている可能性があります。全候補に正しく投票してください。";
+      //alert('自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。');
+    }
   }else{
     const checks = document.getElementsByClassName('check');
-    checks[0].innerHTML = "自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。";
+    checks[0].innerHTML = "自分の名前を投票している可能性があります。";
     //alert('自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。');
   }
 }
