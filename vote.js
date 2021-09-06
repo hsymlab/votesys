@@ -127,16 +127,21 @@ function connecttext(textid_list,  checkboxid_list ) {
   if( ischecked_list.every(value => value == true) ) {
     // チェックが入っていたら有効化
     for (let item of textid_list) {
+      // document.getElementById(item).disabled = false;
       document.getElementById(item).disabled = false;
       document.getElementById(item).style.borderColor = "#000000";
+      // for(let i = 1; i <= 7; i++){
+      //   document.getElementById('p' + i.toString()).disabled = false;
+      //   document.getElementById('fg' + i.toString()).disabled = false;
+      // }
     }
   }
-  else {
-    // チェックが入っていなかったら無効化
-    for (let item of textid_list) {
-      document.getElementById(item).disabled = true;
-    }
-  }
+  // else {
+  //   // チェックが入っていなかったら無効化
+  //   for (let item of textid_list) {
+  //     document.getElementById(item).disabled = true;
+  //   }
+  // }
 }
 
 var check_p_list = [
@@ -389,11 +394,34 @@ function PageLoad(){
       }
     }).then(() => {
       if(flag == 0){
-        window.location.href = "./role_select.html";
+        window.location.href = './role_select.html';
       }
     })
     resolve();
   });
   // showshowParticipant(db);
+  
+  // 役割を表示する
   showRole(db);
+
+  // 全員がログインできたらボタンを押し、firebaseに情報を送る
+  let login_completed_button = document.getElementById('login_completed');
+  login_completed_button.addEventListener('click', function() {
+    db.collection('login_completed').doc(getTodayTimestamp().toString()).set({
+      completed: 'OK'
+    });
+  }, false);
+
+  // firebaseを監視し、全員がログインできたことを感知したら、チェックボックスを押せるようにし、フルダウンメニューの候補を作成する
+  db.collection('login_completed').doc(getTodayTimestamp().toString()).onSnapshot((doc) => {
+    if(doc.exists){
+      for(let i = 1; i <= 5; i++){
+        document.getElementById('check_p' + i.toString()).disabled = false;
+      }
+      for(let i = 1; i <= 3; i++){
+        document.getElementById('check_fg' + i.toString()).disabled = false;
+      }
+      createCandidate(db);
+    }       
+  });
 }
