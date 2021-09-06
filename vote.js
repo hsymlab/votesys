@@ -279,31 +279,27 @@ async function btn_send(){
   console.log(fg_not_voted);
 
   // 当日参加者以外への投票がされているか確認する。
-  /*
-  let voted_for_absentee_flag = false;
-  for(let i = 0; i < p_list.length; i++){
-    let p_not_voted = p_list.filter(
-      function(x) {
-        return p_form_value.indexOf(x) == -1
-      }
-    )
-    if (p_not_voted.length > 0) p_fg_exact_flag = false;
-    console.log(p_not_voted);
-  }
-  for(let i = 0; i < fg_list.length; i++){
-    let fg_not_voted = fg_list.filter(
-      function(x) {
-        return fg_form_value.indexOf(x) == -1
-      }
-    )
-    if (fg_not_voted.length > 0) p_fg_exact_flag = false;
-    console.log(fg_not_voted);
-  }*/
+  let voted_for_absentee_flag = true; // trueだと大丈夫という意味
+  let p_over_voted = p_form_value.filter(
+    function(x) {
+      return p_list.indexOf(x) == -1 && x != ""
+    }
+  )
+  if (p_over_voted.length > 0) voted_for_absentee_flag = false;
+  console.log(p_over_voted);
+  let fg_over_voted = fg_form_value.filter(
+    function(x) {
+      return fg_list.indexOf(x) == -1 && x != ""
+    }
+  )
+  if (fg_over_voted.length > 0) voted_for_absentee_flag = false;
+  console.log(fg_over_voted);
+
 
   
   if(p_form_value.indexOf(selfID) < 0 && fg_form_value.indexOf(selfID) < 0) {
     if (multipleCheck <= 0 && p_num_check && fg_num_check && count_p_num != 0 && count_fg_num != 0
-        && p_fg_exact_flag) {
+        && p_fg_exact_flag && voted_for_absentee_flag) {
       if (voters_list.indexOf(selfID) < 0){
         //各フォームのデータを成形してfirebaseに送信
         for(let i = 0; i < p_num; i++){
@@ -341,8 +337,7 @@ async function btn_send(){
       }
     }else{
       const checks = document.getElementsByClassName('check');
-      // checks[0].innerHTML = "投票先を間違えている可能性があります。投票候補を見て、すべての候補に正しく投票してください。";
-      checks[0].innerHTML = "自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。";
+      checks[0].innerHTML = "投票先を間違えている可能性があります。投票候補を見て、すべての候補に正しく投票してください。";
       //alert('自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。');
     }
   }else{
