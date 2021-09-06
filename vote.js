@@ -168,6 +168,12 @@ for(var i=0; i<fg_num; i++) {
 }
 text_p_list.push("submit_vote");
 
+// 投票先を取得するための関数。後藤コミットから名前だけ変えてコピペしてきたので後で消す必要がある。
+async function getTodaysRole2(databaseObj) {
+  var docPath = "todays_role/" + getTodayTimestamp().toString() + "/";
+  var data = await getDataFromDB(databaseObj, docPath);
+  return data;
+}
 
 // 投票ボタンを押した時の処理
 async function btn_send(){  
@@ -184,8 +190,8 @@ async function btn_send(){
   }
 
   //各テキストボックスの値を記録するための配列。
-  var p_form_value = new Array(5);
-  var fg_form_value = new Array(5);
+  var p_form_value = new Array(p_num);
+  var fg_form_value = new Array(fg_num);
   
   //PとFGの数だけテキストボックスの値を取得
   for(let i=0; i<p_num; i++){
@@ -240,42 +246,108 @@ async function btn_send(){
   //ここで投票済みの人物のリストを作り、下のif文内のvoters_list.indexOf(selfID)<0で投票済みかをチェックする
   voters_list = [];
   await checkRevote();
-  
-  if(p_form_value.indexOf(selfID) < 0 && fg_form_value.indexOf(selfID) < 0 && 
-     multipleCheck <= 0 && p_num_check && fg_num_check && count_p_num != 0 && 
-     count_fg_num != 0 && voters_list.indexOf(selfID) < 0){
-    //各フォームのデータを成形してfirebaseに送信
-    for(let i = 0; i < p_num; i++){
-      if(p_form_value[i] != "") {
-        var p_voteData = {
-          votersId: dictMap2.get(selfID),
-          votedId: dictMap2.get(p_form_value[i]),
-          voteRank: i+1,
-          role: "Presentor",
-        };
-        await addVoteData(p_voteData);
-      }
-    }
-    for(let i = 0; i < fg_num; i++){
-      if(fg_form_value[i] != ""){
-        var fg_voteData = {
-          votersId: dictMap2.get(selfID),
-          votedId: dictMap2.get(fg_form_value[i]),
-          voteRank: i+1,
-          role: "Facilitator",
-        };
-        await addVoteData(fg_voteData);
-      }
-    }
 
-    //投票結果画面へ遷移
-    var move = function(){
-      window.location.href = "result.html"
-    } 
-    setTimeout(move, 1200);
+  // 参加者の役割を見て、すべての候補に投票できているかどうか確認する
+  // まずは、各役割にどの参加者が割り振られているかを表す表をつくる
+  let todaysRole = await getTodaysRole2(db);
+  let p_list = [];
+  let fg_list = [];
+  // 注: todaysRoleのNULLチェックは省略する。
+  for(let i = 0; i < Object.keys(todaysRole).length; i++){
+    if(todaysRole[Object.keys(todaysRole)[i]] == 'Presenter'){
+      p_list.push(Object.keys(todaysRole)[i]);
+    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator&Graphicer'){
+      fg_list.push(Object.keys(todaysRole)[i]);
+    }
+  }
+  
+  // さっきの表を投票者候補として使うには、自分を候補から消す必要がある
+  p_list = p_list.filter(x => x != selfID)
+  fg_list = fg_list.filter(x => x != selfID)
+
+  // 次に、各役割の投票候補すべてに、その役割の候補として投票できているか確認する
+  // 注: 各役割で全員不足なく投票できているからといって、投票が正しいとは限らない。1位を空欄にして投票されてる可能性もある。
+  let p_fg_exact_flag = true;
+  let p_not_voted = p_list.filter(
+    function(x) {
+      return p_form_value.indexOf(x) == -1
+    }
+  )
+  if (p_not_voted.length > 0) p_fg_exact_flag = false;
+  console.log(p_not_voted);
+  let fg_not_voted = fg_list.filter(
+    function(x) {
+      return fg_form_value.indexOf(x) == -1
+    }
+  )
+  if (fg_not_voted.length > 0) p_fg_exact_flag = false;
+  console.log(fg_not_voted);
+
+  // 当日参加者以外への投票がされているか確認する。
+  let voted_for_absentee_flag = true; // trueだと大丈夫という意味
+  let p_over_voted = p_form_value.filter(
+    function(x) {
+      return p_list.indexOf(x) == -1 && x != ""
+    }
+  )
+  if (p_over_voted.length > 0) voted_for_absentee_flag = false;
+  console.log(p_over_voted);
+  let fg_over_voted = fg_form_value.filter(
+    function(x) {
+      return fg_list.indexOf(x) == -1 && x != ""
+    }
+  )
+  if (fg_over_voted.length > 0) voted_for_absentee_flag = false;
+  console.log(fg_over_voted);
+
+
+  
+  if(p_form_value.indexOf(selfID) < 0 && fg_form_value.indexOf(selfID) < 0) {
+    if (multipleCheck <= 0 && p_num_check && fg_num_check && count_p_num != 0 && count_fg_num != 0
+        && p_fg_exact_flag && voted_for_absentee_flag) {
+      if (voters_list.indexOf(selfID) < 0){
+        //各フォームのデータを成形してfirebaseに送信
+        for(let i = 0; i < p_num; i++){
+          if(p_form_value[i] != "") {
+            var p_voteData = {
+              votersId: dictMap2.get(selfID),
+              votedId: dictMap2.get(p_form_value[i]),
+              voteRank: i+1,
+              role: "Presentor",
+            };
+            await addVoteData(p_voteData);
+          }
+        }
+        for(let i = 0; i < fg_num; i++){
+          if(fg_form_value[i] != ""){
+            var fg_voteData = {
+              votersId: dictMap2.get(selfID),
+              votedId: dictMap2.get(fg_form_value[i]),
+              voteRank: i+1,
+              role: "Facilitator",
+            };
+            await addVoteData(fg_voteData);
+          }
+        }
+
+        //投票結果画面へ遷移
+        var move = function(){
+          window.location.href = "result.html"
+        } 
+        setTimeout(move, 1200);
+      }else{
+        const checks = document.getElementsByClassName('check');
+        checks[0].innerHTML = "再投票している可能性があります。<BR>投票し直したい場合は、システム管理者に連絡してください。";
+        //alert('自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。');
+      }
+    }else{
+      const checks = document.getElementsByClassName('check');
+      checks[0].innerHTML = "投票先を間違えている可能性があります。投票候補を見て、すべての候補に正しく投票してください。";
+      //alert('自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。');
+    }
   }else{
     const checks = document.getElementsByClassName('check');
-    checks[0].innerHTML = "自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。";
+    checks[0].innerHTML = "自分の名前を投票している可能性があります。自分は投票候補から除いてください。";
     //alert('自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。');
   }
 }
