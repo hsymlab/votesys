@@ -379,10 +379,12 @@ function PageLoad(){
   let flag = 0;
   let getlen = new Promise((resolve, reject) => {
     db.collection('todays_role').doc(getTodayTimestamp().toString()).get().then(function(doc) {
-      for(let i = 0; i < Object.keys(doc.data()).length; i++){
-        if(Object.keys(doc.data())[i] == selfID){
-          flag = 1;
-        }
+      if (doc.data() != undefined) {
+        for(let i = 0; i < Object.keys(doc.data()).length; i++){
+          if(Object.keys(doc.data())[i] == selfID){
+            flag = 1;
+          }
+        }  
       }
     }).then(() => {
       if(flag == 0){
