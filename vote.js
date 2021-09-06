@@ -263,6 +263,24 @@ async function btn_send(){
   // 次に、各役割の投票候補すべてに、その役割の候補として投票できているか確認する
   // 注: 各役割で全員不足なく投票できているからといって、投票が正しいとは限らない。1位を空欄にして投票されてる可能性もある。
   let p_fg_exact_flag = true;
+  let p_not_voted = p_list.filter(
+    function(x) {
+      return p_form_value.indexOf(x) == -1
+    }
+  )
+  if (p_not_voted.length > 0) p_fg_exact_flag = false;
+  console.log(p_not_voted);
+  let fg_not_voted = fg_list.filter(
+    function(x) {
+      return fg_form_value.indexOf(x) == -1
+    }
+  )
+  if (fg_not_voted.length > 0) p_fg_exact_flag = false;
+  console.log(fg_not_voted);
+
+  // 当日参加者以外への投票がされているか確認する。
+  /*
+  let voted_for_absentee_flag = false;
   for(let i = 0; i < p_list.length; i++){
     let p_not_voted = p_list.filter(
       function(x) {
@@ -280,9 +298,8 @@ async function btn_send(){
     )
     if (fg_not_voted.length > 0) p_fg_exact_flag = false;
     console.log(fg_not_voted);
-  }
+  }*/
 
-  // TODO: 当日参加者以外への投票を弾きたい。人数合ってれば大丈夫かもしれないけど
   
   if(p_form_value.indexOf(selfID) < 0 && fg_form_value.indexOf(selfID) < 0) {
     if (multipleCheck <= 0 && p_num_check && fg_num_check && count_p_num != 0 && count_fg_num != 0
@@ -330,7 +347,7 @@ async function btn_send(){
     }
   }else{
     const checks = document.getElementsByClassName('check');
-    checks[0].innerHTML = "自分の名前を投票している可能性があります。";
+    checks[0].innerHTML = "自分の名前を投票している可能性があります。自分は投票候補から除いてください。";
     //alert('自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。');
   }
 }
