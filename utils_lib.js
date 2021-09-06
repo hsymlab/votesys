@@ -35,6 +35,31 @@ async function showParticipant(databaseObj) {
   document.getElementById("greeting").innerHTML = innerHTML;
 }
 
+async function showRole(databaseObj) {
+  let todaysRole = await getTodaysRole(databaseObj);
+  let p_list = '';
+  let fg_list = '';
+  let guest_list = '';
+  for(let i = 0; i < Object.keys(todaysRole).length; i++){
+    if(todaysRole[Object.keys(todaysRole)[i]] == 'Presenter'){
+      p_list += Object.keys(todaysRole)[i];
+    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator&Graphicer'){
+      fg_list += Object.keys(todaysRole)[i];
+    }else{
+      guest_list += Object.keys(todaysRole)[i];
+    }
+  }
+  document.getElementById('p_list').innerHTML = p_list;
+  document.getElementById('fg_list').innerHTML = fg_list;
+  document.getElementById('guest_list').innerHTML = guest_list;
+}
+
+async function getTodaysRole(databaseObj) {
+  var docPath = "todays_role/" + getTodayTimestamp().toString() + "/";
+  var data = await getDataFromDB(databaseObj, docPath);
+  return data;
+}
+
 function getTodayTimestamp() {
   var date = new Date();
   var today =

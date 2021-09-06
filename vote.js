@@ -365,7 +365,8 @@ async function predict(thisInput,thisUl){
 
 
 // 6秒ごとに自分の最終ログイン状態をアップデート
-setInterval(function(){return showParticipant(db)}, 6*1000);
+// setInterval(function(){return showParticipant(db)}, 6*1000);
+setInterval(function(){return showRole(db)}, 6*1000);
 
 // 10秒ごとに自分の最終ログイン状態をアップデート
 setInterval(function(){return updateStatus(db, getTodayTimestamp())}, 10*1000);
@@ -393,5 +394,6 @@ function PageLoad(){
     })
     resolve();
   });
-  showParticipant(db);
+  // showshowParticipant(db);
+  showRole(db);
 }
