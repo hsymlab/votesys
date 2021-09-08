@@ -469,6 +469,7 @@ function PageLoad(){
     db.collection('login_completed').doc(getTodayTimestamp().toString()).set({
       completed: 'OK'
     });
+    
   }, false);
 
   // firebaseを監視し、全員がログインできたことを感知したら、チェックボックスを押せるようにし、フルダウンメニューの候補を作成する
