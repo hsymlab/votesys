@@ -35,103 +35,110 @@
   <body onload="PageLoad()">
     
     <div class="wrapper">
-    <h1>論文ゼミ投票システム</h1>
-    <!-- <p id="greeting">
-    <br><br><br><br><br>
-    </p> -->
-    <div id="role_list">
-      <div>
-        <h1>Presenter</h1>
-        <p id="p_list"></p>
+      <h1>投票</h1>
+      <!-- <p id="greeting">
+      <br><br><br><br><br>
+      </p> -->
+      <div id="role_list">
+        <div>
+          <h1>Presenter</h1>
+          <!-- <p id="p_list"></p> -->
+        </div>
+        <div>
+          <h1>Facilitator&Graphicer</h1>
+          <p id="fg_list"></p>
+        </div>
+        <div>
+          <h1>Guest</h1>
+          <p id="guest_list"></p>
+        </div>
+        <button id="login_completed">全員ログイン完了</button>
       </div>
-      <div>
-        <h1>Facilitator&Graphicer</h1>
-        <p id="fg_list"></p>
-      </div>
-      <div>
-        <h1>Guest</h1>
-        <p id="guest_list"></p>
-      </div>
-      <button id="login_completed">全員ログイン完了</button>
-    </div>
 
-    <div class="check"></div>
+      <div class="check"></div>
 
-      <div class="title"><b>■投票画面■</b></div>
+      <!-- <div class="title"><b>■投票画面■</b></div> -->
       
-      <div class="p_title">Presenter</div>
-      <div class="p_vote_title">RANK</div>
+      <div class="p_wrapper">
+        <h1 class="p_title">Presenter</h1>
+        <div class="vote-list">
+          <h3>候補</h3>
+          <p id="p_list"></p>
+        </div>
+        <div class="explain">
+          <h3>評価基準</h3>
+          <label>
+            <input type="checkbox" class="p_checkbox" id="check_p1" onclick="connecttext(text_p_list, check_p_list);" disabled/>
+            <!-- 制限時間が守られていたか（過ぎた後，発表を続けていないか）<br> -->
+            <b>制限時間</b>が守られていたか<br />
+          </label>
 
-      <div class="p_explain">
-        <label>
-          <input type="checkbox" class="p_checkbox" id="check_p1" onclick="connecttext(text_p_list, check_p_list);" disabled/>
-          <!-- 制限時間が守られていたか（過ぎた後，発表を続けていないか）<br> -->
-          <b>制限時間</b>が守られていたか<br />
-        </label>
+          <label>
+            <input type="checkbox" class="p_checkbox" id="check_p2" onclick="connecttext(text_p_list, check_p_list);" disabled/>
+            <!-- 意見・質問に対して，根拠ある返答がはっきりとなされていたか<br>-->
+            <b>意見・質問に対する回答</b>がしっかりしていたか<br />
+          </label>
 
-        <label>
-          <input type="checkbox" class="p_checkbox" id="check_p2" onclick="connecttext(text_p_list, check_p_list);" disabled/>
-          <!-- 意見・質問に対して，根拠ある返答がはっきりとなされていたか<br>-->
-          <b>意見・質問に対する回答</b>がしっかりしていたか<br />
-        </label>
+          <label>
+            <input type="checkbox" class="p_checkbox" id="check_p3" onclick="connecttext(text_p_list, check_p_list);" disabled/>
+            <!-- 発表内容に対して興味深いと思える点が1つでもあったか<br>-->
+            発表内容に対して<b>興味深いと思える点</b>が1つでもあったか<br />
+          </label>
 
-        <label>
-          <input type="checkbox" class="p_checkbox" id="check_p3" onclick="connecttext(text_p_list, check_p_list);" disabled/>
-          <!-- 発表内容に対して興味深いと思える点が1つでもあったか<br>-->
-          発表内容に対して<b>興味深いと思える点</b>が1つでもあったか<br />
-        </label>
+          <label>
+            <input type="checkbox" class="p_checkbox" id="check_p4" onclick="connecttext(text_p_list, check_p_list);" disabled/>
+            <!-- 発表者の態度を心がけていたか（例．貧乏ゆすり・うつむき・表情）<br>-->
+            <b>発表態度</b>は良かったか、<b>声の大きさ</b>と<b>抑揚</b><br />
+          </label>
 
-        <label>
-          <input type="checkbox" class="p_checkbox" id="check_p4" onclick="connecttext(text_p_list, check_p_list);" disabled/>
-          <!-- 発表者の態度を心がけていたか（例．貧乏ゆすり・うつむき・表情）<br>-->
-          <b>発表態度</b>は良かったか、<b>声の大きさ</b>と<b>抑揚</b><br />
-        </label>
-
-        <!--
-        <input type="checkbox" class="p_checkbox" id="check_p5">
-        <!-- 声が大きく，抑揚がついていたか<br>
-        <b>声の大きさ</b>と<b>抑揚</b><br>-->
-        <label>
-          <input type="checkbox" class="p_checkbox" id="check_p5" onclick="connecttext(text_p_list, check_p_list);" disabled/>
-          <!-- 話にリズム・キレ・ストーリー性があったか<br>-->
-          話に<b>リズム・キレ・ストーリー性</b>があったか<br />
-        </label>
-      </div>
-      <!--下記から必要なものを色々追加しました-->
-      <!--onkeyup=""で入力を逐一確認し、addvalue(this)を実行している(thisでinputの要素を受け取り)-->
-      <!--autocompleteで予測変換を実装できるようにする-->
-      <!--listでそれぞれのリストの指定-->
-      <!--datalistが予測変換の際のリストを入れる場所(中のリストはリアルタイムで追加)-->
-      <div class="p_vote">
-        <script>
-          for(let i = 1; i <= p_num; i++){
-            document.write('<p>' + i.toString() + '位 <select id="p' + i.toString() + '" disabled></select></p>');
-          }
-        </script>
-        <!-- <form name="p_form">
-          
-          <span id="input_p_forms"></span>
+          <!--
+          <input type="checkbox" class="p_checkbox" id="check_p5">
+          <!-- 声が大きく，抑揚がついていたか<br>
+          <b>声の大きさ</b>と<b>抑揚</b><br>-->
+          <label>
+            <input type="checkbox" class="p_checkbox" id="check_p5" onclick="connecttext(text_p_list, check_p_list);" disabled/>
+            <!-- 話にリズム・キレ・ストーリー性があったか<br>-->
+            話に<b>リズム・キレ・ストーリー性</b>があったか<br />
+          </label>
+        </div>
+        <!--下記から必要なものを色々追加しました-->
+        <!--onkeyup=""で入力を逐一確認し、addvalue(this)を実行している(thisでinputの要素を受け取り)-->
+        <!--autocompleteで予測変換を実装できるようにする-->
+        <!--listでそれぞれのリストの指定-->
+        <!--datalistが予測変換の際のリストを入れる場所(中のリストはリアルタイムで追加)-->
+        <div class="vote">
+          <h3>順位</h3>
           <script>
-            for(var i=0; i<p_num; i++) {
-              var p_id = "p"+String(i+1);
-              var ul_p_id = "ul_p"+String(i+1);
-              
-              $('<div class="rank_num">').html(`
-                  ${i+1}位
-                  <input
-                    id="${p_id}"
-                    type="text"
-                    maxlength="10"
-                    onfocus='predict("${p_id}", "${ul_p_id}")'
-                    autocomplete="off"
-                    disabled
-                  />
-                  <div class="pred" id="${ul_p_id}"></div>
-              `).appendTo("#input_p_forms");
+            for(let i = 1; i <= p_num; i++){
+              document.write('<p>' + i.toString() + '位 <select id="p' + i.toString() + '" disabled></select></p>');
             }
           </script>
-          
-        </form> -->
+          <!-- <form name="p_form">
+            
+            <span id="input_p_forms"></span>
+            <script>
+              for(var i=0; i<p_num; i++) {
+                var p_id = "p"+String(i+1);
+                var ul_p_id = "ul_p"+String(i+1);
+                
+                $('<div class="rank_num">').html(`
+                    ${i+1}位
+                    <input
+                      id="${p_id}"
+                      type="text"
+                      maxlength="10"
+                      onfocus='predict("${p_id}", "${ul_p_id}")'
+                      autocomplete="off"
+                      disabled
+                    />
+                    <div class="pred" id="${ul_p_id}"></div>
+                `).appendTo("#input_p_forms");
+              }
+            </script>
+            
+          </form> -->
+        </div>
+        <div class="clear"></div>
       </div>
 
       <div class="fg_title">Facilitator & Graphics</div>

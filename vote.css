@@ -1,7 +1,6 @@
 /*投票画面のcssファイル*/
 
-
-.pred {
+/* .pred {
   position: absolute;
   background-color: rgba(255,255,255,0.7);
   width: 100px;
@@ -9,8 +8,15 @@
   margin-left: 20pt;
   z-index: 10;
   
+} */
+
+h1 {
+  text-align: center;
 }
 
+h3 {
+  text-align: center;
+}
 
 .title {
   background-color: #00BFFF;
@@ -22,28 +28,55 @@
   text-align: center;
 }
 
+.p_wrapper {
+  height: 480px;
+}
+
 .p_title {
-  background-color: #F4B183;
-  width: 70%;
-  margin-bottom: 5px;
-  margin-right: 8px;
-  /*border: solid 1px #0099FF;*/
-  float: left;
-  text-align: center;
+  color: #F19E65;
   font-size: 25px;
 }
 
 .fg_title {
-  background-color: #8FAADC;
-  width: 70%;
-  margin-bottom: 5px;
-  margin-right: 8px;
-  /*border: solid 1px #0099FF;*/
-  float: left;
-  text-align: center;
+  color: #4472C4;
   font-size: 25px;
 }
 
+.vote-list {
+  float: left;
+  width: 200px;
+  margin: 20px;
+  height: 360px;
+  background-color: #F4B183;
+  border-radius: 20px;        /* CSS3草案 */  
+    -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 20px;   /* Firefox用 */
+}
+
+.explain {
+  float: left;
+  margin: 20px;
+  height: 360px;
+  background-color: #F4B183;
+  border-radius: 20px;        /* CSS3草案 */  
+    -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 20px;   /* Firefox用 */
+}
+
+.vote {
+  float: right;
+  width: 200px;
+  margin: 20px;
+  height: 360px;
+  background-color: #F4B183;
+  border-radius: 20px;        /* CSS3草案 */  
+    -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 20px;   /* Firefox用 */
+}
+
+.clear {
+  clear: both;
+}
 .p_vote_title {
   background-color: #FFCCCC;
   width: 29%;
