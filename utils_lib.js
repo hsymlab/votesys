@@ -16,7 +16,7 @@ async function showRole(databaseObj) {
   }
   document.getElementById('p_list').innerHTML = p_rolelist;
   document.getElementById('fg_list').innerHTML = fg_rolelist;
-  document.getElementById('guest_list').innerHTML = guest_rolelist;
+  document.getElementById('g_list').innerHTML = guest_rolelist;
 }
 
 async function getTodaysRole(databaseObj) {

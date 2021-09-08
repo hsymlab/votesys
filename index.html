@@ -39,7 +39,7 @@
       <!-- <p id="greeting">
       <br><br><br><br><br>
       </p> -->
-      <div id="role_list">
+      <!-- <div id="role_list">
         <div>
           <h3>Presenter</h3>
           <p id="p_list2"></p>
@@ -53,9 +53,7 @@
           <p id="guest_list"></p>
         </div>
         <button id="login_completed">全員ログイン完了</button>
-      </div>
-
-      <div class="check"></div>
+      </div> -->
 
       <!-- <div class="title"><b>■投票画面■</b></div> -->
       
@@ -63,7 +61,7 @@
       <div class="p_container">
         <div class="p vote-list">
           <h3>候補</h3>
-          <p id="p_list"></p>
+          <p class="list" id="p_list"></p>
         </div>
         <div class="p explain">
           <h3>評価基準</h3>
@@ -108,30 +106,6 @@
               document.write('<p>' + i.toString() + '位 <select id="p' + i.toString() + '" disabled></select></p>');
             }
           </script>
-          <!-- <form name="p_form">
-            
-            <span id="input_p_forms"></span>
-            <script>
-              for(var i=0; i<p_num; i++) {
-                var p_id = "p"+String(i+1);
-                var ul_p_id = "ul_p"+String(i+1);
-                
-                $('<div class="rank_num">').html(`
-                    ${i+1}位
-                    <input
-                      id="${p_id}"
-                      type="text"
-                      maxlength="10"
-                      onfocus='predict("${p_id}", "${ul_p_id}")'
-                      autocomplete="off"
-                      disabled
-                    />
-                    <div class="pred" id="${ul_p_id}"></div>
-                `).appendTo("#input_p_forms");
-              }
-            </script>
-            
-          </form> -->
         </div>
       </div>
 
@@ -139,7 +113,7 @@
       <div class="fg_container">
         <div class="fg vote-list">
           <h3>候補</h3>
-          <p id="fg_list"></p>
+          <p class="list" id="fg_list"></p>
         </div>
         <div class="fg explain">
           <h3>評価基準</h3>
@@ -176,41 +150,24 @@
               document.write('<p>' + i.toString() + '位 <select id="fg' + i.toString() + '" disabled></select></p>');
             }
           </script>
-          <!-- <form name="fg_form">
-            
-            <span id="input_fg_forms"></span>
-            <script>
-              for(var i=0; i<fg_num; i++) {
-                var fg_id = "fg"+String(i+1);
-                var ul_fg_id = "ul_fg"+String(i+1);
-                
-                $('<div class="rank_num">').html(`
-                    ${i+1}位
-                    <input
-                      id="${fg_id}"
-                      type="text"
-                      maxlength="10"
-                      onfocus='predict("${fg_id}", "${ul_fg_id}")'
-                      autocomplete="off"
-                      disabled
-                    />
-                    <div class="pred" id="${ul_fg_id}"></div>
-                `).appendTo("#input_fg_forms");
-              }
-            </script>
-            
-          </form> -->
         </div>
       </div>
       <!-- <form name="send"> -->
-      <div style="height: 60px;">
-        <button
-          id="submit_vote"
-          onclick="btn_send()"
-          disabled
-        >送信</button>
+      
+      <h1 class="g_title">Guest</h1>
+      <div class="g_container">
+        <div class="g vote-list">
+          <p class="list" id="g_list"></p>
+        </div>
       </div>
+      
+      <button id="login_completed">全員がログイン完了</button>
 
+      <div class="check"></div>
+
+      <button id="submit_vote" onclick="btn_send()" disabled>送信</button>
+
+      <br><br><br>
       <!-- 入力フォームの数に応じて背景の高さを自動で変更 -->
       <!-- <script>
         function isSmartPhone() {
@@ -238,9 +195,6 @@
       </script> -->
       
     </div>
-    <br>
-    <br>
-    <br>
 <!--<a href="/result.html">結果画面</a> -->
   </body>
 </html>

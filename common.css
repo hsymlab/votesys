@@ -8,7 +8,7 @@ body {
 	background-color: #ffffff;
 	width: 960px;
 	margin: 0 auto;
-	padding: 5px;
+	padding: 50px;
 
 	border-radius: 20px;        /* CSS3草案 */  
     -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  

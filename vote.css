@@ -43,6 +43,10 @@ h3 {
   align-items: stretch;
 }
 
+.g_containter {
+  width: 50%;
+}
+
 .p_title {
   color: #F19E65;
   font-size: 25px;
@@ -50,6 +54,11 @@ h3 {
 
 .fg_title {
   color: #4472C4;
+  font-size: 25px;
+}
+
+.g_title {
+  color: #696969;
   font-size: 25px;
 }
 
@@ -61,12 +70,21 @@ h3 {
   background-color: #B4C7E7;
 }
 
+.g {
+  background-color: #AFABAB;
+}
+
+#list {
+  vertical-align: middle;
+}
+
 .vote-list {
   flex-basis: 15%;
   padding: 5px 10px;
   border-radius: 20px;        /* CSS3草案 */  
     -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
     -moz-border-radius: 20px;   /* Firefox用 */
+  text-align: center;
 }
 
 .explain {
@@ -185,13 +203,13 @@ div.column {
   float: left;
 }
 
-#submit_vote {
+/* #submit_vote {
   margin-top: 5px;
   float: right;
   width: 100%;
   height: 50px;
   font-size: 10pt;
-}
+} */
 
 label, input[type='checkbox'] {
     cursor: pointer;
@@ -200,5 +218,27 @@ label, input[type='checkbox'] {
 div.check {
   color: red;
   font-size: 25px;
-  text-aling: center !important;
+  text-align: center !important;
 }
+
+#login_completed_wrapper {
+  text-align: center;
+}
+
+#submit_vote_wrapper {
+  text-align: center;
+}
+
+button {
+  width: 100%;
+  height: 50px;
+  border-radius: 20px;        /* CSS3草案 */  
+  -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+  -moz-border-radius: 20px;   /* Firefox用 */
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+button:hover {
+  opacity: 0.6;
+}  
