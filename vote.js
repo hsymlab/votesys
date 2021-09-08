@@ -290,10 +290,24 @@ async function btn_send(){
   let fg_num_check = false;
   if (count_fg_num == fg_list.length) fg_num_check = true;
 
+  // 1位を抜かして2位を投票してるてきなのをチェック
+  let skip_flag = true; // スキップしてなければtrue
+  for(let i=0; i<p_num-1; i++) {
+    if (p_form_value[i] == "" && p_form_value[i+1] != "") {
+      skip_flag = false;
+      break;
+    }
+  }
+  for(let i=0; i<fg_num-1; i++) {
+    if (fg_form_value[i] == "" && fg_form_value[i+1] != "") {
+      skip_flag = false;
+      break;
+    }
+  }
   
   if(p_form_value.indexOf(selfID) < 0 && fg_form_value.indexOf(selfID) < 0) {
     if (multipleCheck <= 0 && p_num_check && fg_num_check && count_p_num != 0 && count_fg_num != 0
-        && p_fg_exact_flag && voted_for_absentee_flag) {
+        && p_fg_exact_flag && voted_for_absentee_flag && skip_flag) {
       if (voters_list.indexOf(selfID) < 0){
         //各フォームのデータを成形してfirebaseに送信
         for(let i = 0; i < p_num; i++){
