@@ -210,37 +210,6 @@ async function btn_send(){
     return self.indexOf(x) === i && i !== self.lastIndexOf(x);
   });
   
-  // 間違った名前が入力されているかのチェック
-  var count_p_num = 0;
-  for(let i = 0; i < p_num; i++){
-    if(p_form_value[i] != "") {
-      count_p_num += 1;
-    }
-  }
-  var count_fg_num = 0;
-  for(let i = 0; i < fg_num; i++){
-    if(fg_form_value[i] != "") {
-      count_fg_num += 1;
-    }
-  }
-  
-  var p_num_check = false;
-  var p_flag_sum = 0;
-  p_flag.forEach(function(value) {
-    p_flag_sum += value;
-  })
-  if(p_flag_sum == count_p_num) {
-    p_num_check = true;
-  }
-
-  var fg_num_check = false;
-  var fg_flag_sum = 0;
-  fg_flag.forEach(function(value) {
-    fg_flag_sum += value;
-  })
-  if(fg_flag_sum == count_fg_num) {
-    fg_num_check = true;
-  }
   
   //再投票を禁止する（既にfirebaseに自分が投票したデータが有る場合は送信できなくする） 
   //ここで投票済みの人物のリストを作り、下のif文内のvoters_list.indexOf(selfID)<0で投票済みかをチェックする
@@ -249,7 +218,7 @@ async function btn_send(){
 
   // 参加者の役割を見て、すべての候補に投票できているかどうか確認する
   // まずは、各役割にどの参加者が割り振られているかを表す表をつくる
-  let todaysRole = await getTodaysRole2(db);
+  let todaysRole = await getTodaysRole(db);
   let p_list = [];
   let fg_list = [];
   // 注: todaysRoleのNULLチェックは省略する。
@@ -265,7 +234,7 @@ async function btn_send(){
   p_list = p_list.filter(x => x != selfID)
   fg_list = fg_list.filter(x => x != selfID)
 
-  // 次に、各役割の投票候補すべてに、その役割の候補として投票できているか確認する
+  // 次に、各役割の投票候補すべてに、その役割の候補として投票できているか確認する
   // 注: 各役割で全員不足なく投票できているからといって、投票が正しいとは限らない。1位を空欄にして投票されてる可能性もある。
   let p_fg_exact_flag = true;
   let p_not_voted = p_list.filter(
@@ -300,6 +269,24 @@ async function btn_send(){
   if (fg_over_voted.length > 0) voted_for_absentee_flag = false;
   console.log(fg_over_voted);
 
+  // 投票人数チェック(旧: 間違った名前が入力されているかのチェック)
+  var count_p_num = 0;
+  for(let i = 0; i < p_num; i++){
+    if(p_form_value[i] != "") {
+      count_p_num += 1;
+    }
+  }
+  var count_fg_num = 0;
+  for(let i = 0; i < fg_num; i++){
+    if(fg_form_value[i] != "") {
+      count_fg_num += 1;
+    }
+  }
+
+  let p_num_check = false;
+  if (count_p_num == p_list.length) p_num_check = true;
+  let fg_num_check = false;
+  if (count_fg_num == fg_list.length) fg_num_check = true;
 
   
   if(p_form_value.indexOf(selfID) < 0 && fg_form_value.indexOf(selfID) < 0) {
