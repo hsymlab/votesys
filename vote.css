@@ -1,11 +1,5 @@
 /*投票画面のcssファイル*/
 
-.wrapper {
-  width: 800px;
-  padding: 5px;
-  background-color: #FFFFFF;
-  margin: 0 auto;
-}
 
 .pred {
   position: absolute;
@@ -29,7 +23,7 @@
 }
 
 .p_title {
-  background-color: #FFCCCC;
+  background-color: #F4B183;
   width: 70%;
   margin-bottom: 5px;
   margin-right: 8px;
@@ -40,7 +34,7 @@
 }
 
 .fg_title {
-  background-color: #90EE90;
+  background-color: #8FAADC;
   width: 70%;
   margin-bottom: 5px;
   margin-right: 8px;
