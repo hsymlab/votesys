@@ -8,7 +8,7 @@ async function showRole(databaseObj) {
   for(let i = 0; i < Object.keys(todaysRole).length; i++){
     if(todaysRole[Object.keys(todaysRole)[i]] == 'Presenter'){
       p_rolelist += Object.keys(todaysRole)[i] + '<br>';
-    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator&Graphicer'){
+    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator'){
       fg_rolelist += Object.keys(todaysRole)[i] + '<br>';
     }else{
       guest_rolelist += Object.keys(todaysRole)[i] + '<br>';
@@ -32,7 +32,7 @@ async function createCandidate(databaseObj) {
   for(let i = 0; i < Object.keys(todaysRole).length; i++){
     if(todaysRole[Object.keys(todaysRole)[i]] == 'Presenter' && Object.keys(todaysRole)[i] != selfID){
       p_candidatelist += '<option>' + Object.keys(todaysRole)[i] + '</option>';
-    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator&Graphicer' && Object.keys(todaysRole)[i] != selfID){
+    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator' && Object.keys(todaysRole)[i] != selfID){
       fg_candidatelist += '<option>' + Object.keys(todaysRole)[i] + '</option>';
     }
   }
@@ -295,6 +295,7 @@ function getUserName(databaseObj, docPath) {
       if (doc.exists) {
         var docData = doc.data();
         selfID = docData[login_user_email];
+        document.getElementById('myname').innerHTML = selfID;
         console.log("Login user's name (selfID):", selfID);
       } else {
         console.log("No such email!");

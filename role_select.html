@@ -29,12 +29,15 @@
     </script>
   </head>
   <body onload="role_select_load()">
-    <div id="wrapper">
+    <div class="wrapper">
         <h1>ログイン</h1>
-        <p>ようこそ〇〇さん。あなたの役割を選択してください。</p>
-        <button class="role" id="Presenter">Presenter</button>
-        <button class="role" id="Facilitator&Graphicer">Facilitator&Graphicer</button>
-        <button class="role" id="Guest">Guest</button>
+        <p>ようこそ<span id="myname"></span>さん。あなたの役割を選択してください。</p>
+        <div id='roles'>
+          <button class="role" id="Presenter"><img class="icon" src="./images/Presenter.svg"><br><br>Presenter</button>
+          <button class="role" id="Facilitator"><img class="icon" src="./images/Facilitator.svg"><br><br>Facilitator&Graphicer</button>
+          <button class="role" id="Guest"><img class="icon" src="./images/Guest.svg"><br><br>Guest</button>
+        </div>
+        
     </div>
     
   </body>
