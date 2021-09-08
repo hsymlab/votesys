@@ -1,5 +1,7 @@
 /*投票画面のcssファイル*/
 
+/* flexbox参考: https://www.webcreatorbox.com/tech/css-flexbox-cheat-sheet */
+
 /* .pred {
   position: absolute;
   background-color: rgba(255,255,255,0.7);
@@ -18,18 +20,27 @@ h3 {
   text-align: center;
 }
 
-.title {
-  background-color: #00BFFF;
-  height: 60px;
-  font-size: 30pt;
-  color: #FFFFFF;
-  margin-top: 30px;
-  margin-bottom: 5px;
+#role_list {
   text-align: center;
+  margin: 40px 0px;
 }
 
-.p_wrapper {
-  height: 480px;
+.p_container {
+  /* height: 480px; */
+  display: flex;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.fg_container {
+  /* height: 480px; */
+  display: flex;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
+  justify-content: space-around;
+  align-items: stretch;
 }
 
 .p_title {
@@ -42,59 +53,36 @@ h3 {
   font-size: 25px;
 }
 
+.p {
+  background-color: #F8CBAD;
+}
+
+.fg {
+  background-color: #B4C7E7;
+}
+
 .vote-list {
-  float: left;
-  width: 200px;
-  margin: 20px;
-  height: 360px;
-  background-color: #F4B183;
+  flex-basis: 15%;
+  padding: 5px 10px;
   border-radius: 20px;        /* CSS3草案 */  
     -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
     -moz-border-radius: 20px;   /* Firefox用 */
 }
 
 .explain {
-  float: left;
-  margin: 20px;
-  height: 360px;
-  background-color: #F4B183;
+  flex-basis: 55%;
+  padding: 5px 20px;
   border-radius: 20px;        /* CSS3草案 */  
     -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
     -moz-border-radius: 20px;   /* Firefox用 */
 }
 
 .vote {
-  float: right;
-  width: 200px;
-  margin: 20px;
-  height: 360px;
-  background-color: #F4B183;
+  flex-basis: 15%;
+  padding: 5px 10px;
   border-radius: 20px;        /* CSS3草案 */  
     -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
     -moz-border-radius: 20px;   /* Firefox用 */
-}
-
-.clear {
-  clear: both;
-}
-.p_vote_title {
-  background-color: #FFCCCC;
-  width: 29%;
-  margin-bottom: 5px;
-  /*border: solid 1px #0099FF;*/
-  float: left;
-  text-align: center;
-  font-size: 25px;
-}
-
-.fg_vote_title {
-  background-color: #90EE90;
-  width: 29%;
-  margin-bottom: 5px;
-  /*border: solid 1px #0099FF;*/
-  float: left;
-  text-align: center;
-  font-size: 25px;
 }
 
 .p_explain, .p_vote, .fg_explain, .fg_vote {

@@ -41,15 +41,15 @@
       </p> -->
       <div id="role_list">
         <div>
-          <h1>Presenter</h1>
-          <!-- <p id="p_list"></p> -->
+          <h3>Presenter</h3>
+          <p id="p_list2"></p>
         </div>
         <div>
-          <h1>Facilitator&Graphicer</h1>
-          <p id="fg_list"></p>
+          <h3>Facilitator&Graphicer</h3>
+          <p id="fg_list2"></p>
         </div>
         <div>
-          <h1>Guest</h1>
+          <h3>Guest</h3>
           <p id="guest_list"></p>
         </div>
         <button id="login_completed">全員ログイン完了</button>
@@ -59,13 +59,13 @@
 
       <!-- <div class="title"><b>■投票画面■</b></div> -->
       
-      <div class="p_wrapper">
-        <h1 class="p_title">Presenter</h1>
-        <div class="vote-list">
+      <h1 class="p_title">Presenter</h1>
+      <div class="p_container">
+        <div class="p vote-list">
           <h3>候補</h3>
           <p id="p_list"></p>
         </div>
-        <div class="explain">
+        <div class="p explain">
           <h3>評価基準</h3>
           <label>
             <input type="checkbox" class="p_checkbox" id="check_p1" onclick="connecttext(text_p_list, check_p_list);" disabled/>
@@ -101,12 +101,7 @@
             話に<b>リズム・キレ・ストーリー性</b>があったか<br />
           </label>
         </div>
-        <!--下記から必要なものを色々追加しました-->
-        <!--onkeyup=""で入力を逐一確認し、addvalue(this)を実行している(thisでinputの要素を受け取り)-->
-        <!--autocompleteで予測変換を実装できるようにする-->
-        <!--listでそれぞれのリストの指定-->
-        <!--datalistが予測変換の際のリストを入れる場所(中のリストはリアルタイムで追加)-->
-        <div class="vote">
+        <div class="p vote">
           <h3>順位</h3>
           <script>
             for(let i = 1; i <= p_num; i++){
@@ -138,82 +133,86 @@
             
           </form> -->
         </div>
-        <div class="clear"></div>
       </div>
 
-      <div class="fg_title">Facilitator & Graphics</div>
-      <div class="fg_vote_title">RANK</div>
-
-      <div class="fg_explain">
-        <label>
-          <input type="checkbox" class="fg_checkbox" id="check_fg1" onclick="connecttext(text_fg_list, check_fg_list);" disabled/>
-          <!-- 意見（「発表」を含む）の整理ができていたか<br>
-          （例．発言の補足のための深掘り・見やすいグラフィック（色，字，文，絵）・意見の書き出し）<br>-->
-          発表内容や意見の<b>整理</b>、<b>グラフィックの見やすさ</b><br />
-        </label>
-
-        <label>
-          <input type="checkbox" class="fg_checkbox" id="check_fg2" onclick="connecttext(text_fg_list, check_fg_list);" disabled/>
-          <!-- 場に対して，討論が発生するような問題（議題）提起ができていたか<br>-->
-          場に対して，討論が発生するような<b>問題（議題）提起</b>ができていたか<br />
-        </label>
-
-        <label>
-          <input type="checkbox" class="fg_checkbox" id="check_fg3" onclick="connecttext(text_fg_list, check_fg_list);" disabled/>
-          <!-- 討論の切れ目が見極められていたか<br>
-          （グラフィックにおいて，フレームワークが活用できていたか）<br>-->
-          <b>ファシリテート</b>はしっかり行えていたか<br />
-        </label>
-      </div>
-
-      <!--下記から必要なものを色々追加しました-->
-      <!--onkeyup=""で入力を逐一確認し、addvalue(this)を実行している(thisでinputの要素を受け取り)-->
-      <!--autocompleteで予測変換を実装できるようにする-->
-      <!--listでそれぞれのリストの指定-->
-      <!--datalistが予測変換の際のリストを入れる場所(中のリストはリアルタイムで追加)-->
-      <div class="fg_vote">
-        <script>
-          for(let i = 1; i <= fg_num; i++){
-            document.write('<p>' + i.toString() + '位 <select id="fg' + i.toString() + '" disabled></select></p>');
-          }
-        </script>
-        <!-- <form name="fg_form">
-          
-          <span id="input_fg_forms"></span>
+      <h1 class="fg_title">Facilitator & Graphicer</h1>
+      <div class="fg_container">
+        <div class="fg vote-list">
+          <h3>候補</h3>
+          <p id="fg_list"></p>
+        </div>
+        <div class="fg explain">
+          <h3>評価基準</h3>
+          <label>
+            <input type="checkbox" class="fg_checkbox" id="check_fg1" onclick="connecttext(text_fg_list, check_fg_list);" disabled/>
+            <!-- 意見（「発表」を含む）の整理ができていたか<br>
+            （例．発言の補足のための深掘り・見やすいグラフィック（色，字，文，絵）・意見の書き出し）<br>-->
+            発表内容や意見の<b>整理</b>、<b>グラフィックの見やすさ</b><br />
+          </label>
+  
+          <label>
+            <input type="checkbox" class="fg_checkbox" id="check_fg2" onclick="connecttext(text_fg_list, check_fg_list);" disabled/>
+            <!-- 場に対して，討論が発生するような問題（議題）提起ができていたか<br>-->
+            場に対して，討論が発生するような<b>問題（議題）提起</b>ができていたか<br />
+          </label>
+  
+          <label>
+            <input type="checkbox" class="fg_checkbox" id="check_fg3" onclick="connecttext(text_fg_list, check_fg_list);" disabled/>
+            <!-- 討論の切れ目が見極められていたか<br>
+            （グラフィックにおいて，フレームワークが活用できていたか）<br>-->
+            <b>ファシリテート</b>はしっかり行えていたか<br />
+          </label>
+        </div>
+  
+        <!--下記から必要なものを色々追加しました-->
+        <!--onkeyup=""で入力を逐一確認し、addvalue(this)を実行している(thisでinputの要素を受け取り)-->
+        <!--autocompleteで予測変換を実装できるようにする-->
+        <!--listでそれぞれのリストの指定-->
+        <!--datalistが予測変換の際のリストを入れる場所(中のリストはリアルタイムで追加)-->
+        <div class="fg vote">
+          <h3>順位</h3>
           <script>
-            for(var i=0; i<fg_num; i++) {
-              var fg_id = "fg"+String(i+1);
-              var ul_fg_id = "ul_fg"+String(i+1);
-              
-              $('<div class="rank_num">').html(`
-                  ${i+1}位
-                  <input
-                    id="${fg_id}"
-                    type="text"
-                    maxlength="10"
-                    onfocus='predict("${fg_id}", "${ul_fg_id}")'
-                    autocomplete="off"
-                    disabled
-                  />
-                  <div class="pred" id="${ul_fg_id}"></div>
-              `).appendTo("#input_fg_forms");
+            for(let i = 1; i <= fg_num; i++){
+              document.write('<p>' + i.toString() + '位 <select id="fg' + i.toString() + '" disabled></select></p>');
             }
           </script>
-          
-        </form> -->
+          <!-- <form name="fg_form">
+            
+            <span id="input_fg_forms"></span>
+            <script>
+              for(var i=0; i<fg_num; i++) {
+                var fg_id = "fg"+String(i+1);
+                var ul_fg_id = "ul_fg"+String(i+1);
+                
+                $('<div class="rank_num">').html(`
+                    ${i+1}位
+                    <input
+                      id="${fg_id}"
+                      type="text"
+                      maxlength="10"
+                      onfocus='predict("${fg_id}", "${ul_fg_id}")'
+                      autocomplete="off"
+                      disabled
+                    />
+                    <div class="pred" id="${ul_fg_id}"></div>
+                `).appendTo("#input_fg_forms");
+              }
+            </script>
+            
+          </form> -->
+        </div>
       </div>
-      <form name="send">
-        <input
-          type="button"
+      <!-- <form name="send"> -->
+      <div style="height: 60px;">
+        <button
           id="submit_vote"
-          value="送信"
           onclick="btn_send()"
           disabled
-        />
-      </form>
+        >送信</button>
+      </div>
 
       <!-- 入力フォームの数に応じて背景の高さを自動で変更 -->
-      <script>
+      <!-- <script>
         function isSmartPhone() {
           if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
             return true;
@@ -236,7 +235,7 @@
           }
           $(".p_explain, .p_vote, .fg_explain, .fg_vote").css("height", String(back_height)+"px");
         }
-      </script>
+      </script> -->
       
     </div>
     <br>
