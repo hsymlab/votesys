@@ -142,6 +142,14 @@ function connecttext(textid_list,  checkboxid_list ) {
   //     document.getElementById(item).disabled = true;
   //   }
   // }
+
+  // P / FG いずれのチェックもついている状態で送信ボタンを活性化させる
+  let ischecked_all_list = check_p_list
+  .map(id => document.getElementById(id).checked)
+  .concat(check_fg_list.map(id => document.getElementById(id).checked));
+  if( ischecked_all_list.every(value => value == true) ) {
+    document.getElementById("submit_vote").disabled = false;
+  }
 }
 
 var check_p_list = [
@@ -155,7 +163,7 @@ var text_p_list = [];
 for(var i=0; i<p_num; i++) {
   text_p_list[i] = "p"+String(i+1);
 }
-text_p_list.push("submit_vote");
+// text_p_list.push("submit_vote");
 
 var check_fg_list = [
   "check_fg1",
@@ -166,14 +174,8 @@ var text_fg_list = [];
 for(var i=0; i<fg_num; i++) {
   text_fg_list[i] = "fg"+String(i+1);
 }
-text_p_list.push("submit_vote");
+// text_p_list.push("submit_vote");
 
-// 投票先を取得するための関数。後藤コミットから名前だけ変えてコピペしてきたので後で消す必要がある。
-async function getTodaysRole2(databaseObj) {
-  var docPath = "todays_role/" + getTodayTimestamp().toString() + "/";
-  var data = await getDataFromDB(databaseObj, docPath);
-  return data;
-}
 
 // 投票ボタンを押した時の処理
 async function btn_send(){  
