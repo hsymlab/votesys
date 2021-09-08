@@ -225,7 +225,7 @@ async function btn_send(){
   for(let i = 0; i < Object.keys(todaysRole).length; i++){
     if(todaysRole[Object.keys(todaysRole)[i]] == 'Presenter'){
       p_list.push(Object.keys(todaysRole)[i]);
-    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator&Graphicer'){
+    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator'){
       fg_list.push(Object.keys(todaysRole)[i]);
     }
   }
