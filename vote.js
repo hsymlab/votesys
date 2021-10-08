@@ -19,7 +19,8 @@ var name_list = {
   'Sasakawa':['笹川','Sasakawa','sasakawa','ササカワ','ささかわ'],
   'Tsutsumi':['堤','Tsutsumi','tsutsumi','ツツミ','つつみ'],
   'Hayashi':['林','Hayashi','hayashi','ハヤシ','はやし'],
-  'Natori':['名執','Natori','natori','ナトリ','なとり']
+  'Natori':['名執','Natori','natori','ナトリ','なとり'],
+  'Hashiyama':['橋山','Hashiyama','hashiyama','ハシヤマ','はしやま']
 };
 
 //PとFGの人数(ここを変更すると入力フォームの数が変わります)
