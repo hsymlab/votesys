@@ -18,7 +18,8 @@ var name_list = {
   'Ogawa':['小川','Ogawa','ogawa','オガワ','おがわ'],
   'Sasakawa':['笹川','Sasakawa','sasakawa','ササカワ','ささかわ'],
   'Tsutsumi':['堤','Tsutsumi','tsutsumi','ツツミ','つつみ'],
-  'Hayashi':['林','Hayashi','hayashi','ハヤシ','はやし']
+  'Hayashi':['林','Hayashi','hayashi','ハヤシ','はやし'],
+  'Natori':['名執','Natori','natori','ナトリ','なとり']
 };
 
 //PとFGの人数(ここを変更すると入力フォームの数が変わります)
