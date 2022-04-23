@@ -1,6 +1,6 @@
 //投票画面のjsファイル
 /*-------------------------------*/
-let Year = 2021;
+let Year = 2022;
 
 //このリストは予測候補と入力時の名前のエラーチェックと再投票防止に使います。
 //毎年更新をお願いします。
@@ -18,7 +18,12 @@ var name_list = {
   'Ogawa':['小川','Ogawa','ogawa','オガワ','おがわ'],
   'Sasakawa':['笹川','Sasakawa','sasakawa','ササカワ','ささかわ'],
   'Tsutsumi':['堤','Tsutsumi','tsutsumi','ツツミ','つつみ'],
-  'Hayashi':['林','Hayashi','hayashi','ハヤシ','はやし']
+  'Hayashi':['林','Hayashi','hayashi','ハヤシ','はやし'],
+  'Natori':['名執','Natori','natori','ナトリ','なとり'],
+  'Hashiyama':['橋山','Hashiyama','hashiyama','ハシヤマ','はしやま'],
+  'Deguchi':['出口','Deguchi','deguchi','デグチ','でぐち'],
+  'Higashikawa':['東川','Higashikawa','higashikawa','ヒガシカワ','ひがしかわ'],
+  'Nagai':['永井','Nagai','nagai','ナガイ','ながい']
 };
 
 //PとFGの人数(ここを変更すると入力フォームの数が変わります)
@@ -127,15 +132,28 @@ function connecttext(textid_list,  checkboxid_list ) {
   if( ischecked_list.every(value => value == true) ) {
     // チェックが入っていたら有効化
     for (let item of textid_list) {
+      // document.getElementById(item).disabled = false;
       document.getElementById(item).disabled = false;
       document.getElementById(item).style.borderColor = "#000000";
+      // for(let i = 1; i <= 7; i++){
+      //   document.getElementById('p' + i.toString()).disabled = false;
+      //   document.getElementById('fg' + i.toString()).disabled = false;
+      // }
     }
   }
-  else {
-    // チェックが入っていなかったら無効化
-    for (let item of textid_list) {
-      document.getElementById(item).disabled = true;
-    }
+  // else {
+  //   // チェックが入っていなかったら無効化
+  //   for (let item of textid_list) {
+  //     document.getElementById(item).disabled = true;
+  //   }
+  // }
+
+  // P / FG いずれのチェックもついている状態で送信ボタンを活性化させる
+  let ischecked_all_list = check_p_list
+  .map(id => document.getElementById(id).checked)
+  .concat(check_fg_list.map(id => document.getElementById(id).checked));
+  if( ischecked_all_list.every(value => value == true) ) {
+    document.getElementById("submit_vote").disabled = false;
   }
 }
 
@@ -150,7 +168,7 @@ var text_p_list = [];
 for(var i=0; i<p_num; i++) {
   text_p_list[i] = "p"+String(i+1);
 }
-text_p_list.push("submit_vote");
+// text_p_list.push("submit_vote");
 
 var check_fg_list = [
   "check_fg1",
@@ -161,7 +179,7 @@ var text_fg_list = [];
 for(var i=0; i<fg_num; i++) {
   text_fg_list[i] = "fg"+String(i+1);
 }
-text_p_list.push("submit_vote");
+// text_p_list.push("submit_vote");
 
 
 // 投票ボタンを押した時の処理
@@ -179,8 +197,8 @@ async function btn_send(){
   }
 
   //各テキストボックスの値を記録するための配列。
-  var p_form_value = new Array(5);
-  var fg_form_value = new Array(5);
+  var p_form_value = new Array(p_num);
+  var fg_form_value = new Array(fg_num);
   
   //PとFGの数だけテキストボックスの値を取得
   for(let i=0; i<p_num; i++){
@@ -199,7 +217,66 @@ async function btn_send(){
     return self.indexOf(x) === i && i !== self.lastIndexOf(x);
   });
   
-  // 間違った名前が入力されているかのチェック
+  
+  //再投票を禁止する（既にfirebaseに自分が投票したデータが有る場合は送信できなくする） 
+  //ここで投票済みの人物のリストを作り、下のif文内のvoters_list.indexOf(selfID)<0で投票済みかをチェックする
+  voters_list = [];
+  await checkRevote();
+
+  // 参加者の役割を見て、すべての候補に投票できているかどうか確認する
+  // まずは、各役割にどの参加者が割り振られているかを表す表をつくる
+  let todaysRole = await getTodaysRole(db);
+  let p_list = [];
+  let fg_list = [];
+  // 注: todaysRoleのNULLチェックは省略する。
+  for(let i = 0; i < Object.keys(todaysRole).length; i++){
+    if(todaysRole[Object.keys(todaysRole)[i]] == 'Presenter'){
+      p_list.push(Object.keys(todaysRole)[i]);
+    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator'){
+      fg_list.push(Object.keys(todaysRole)[i]);
+    }
+  }
+  
+  // さっきの表を投票者候補として使うには、自分を候補から消す必要がある
+  p_list = p_list.filter(x => x != selfID)
+  fg_list = fg_list.filter(x => x != selfID)
+
+  // 次に、各役割の投票候補すべてに、その役割の候補として投票できているか確認する
+  // 注: 各役割で全員不足なく投票できているからといって、投票が正しいとは限らない。1位を空欄にして投票されてる可能性もある。
+  let p_fg_exact_flag = true;
+  let p_not_voted = p_list.filter(
+    function(x) {
+      return p_form_value.indexOf(x) == -1
+    }
+  )
+  if (p_not_voted.length > 0) p_fg_exact_flag = false;
+  console.log(p_not_voted);
+  let fg_not_voted = fg_list.filter(
+    function(x) {
+      return fg_form_value.indexOf(x) == -1
+    }
+  )
+  if (fg_not_voted.length > 0) p_fg_exact_flag = false;
+  console.log(fg_not_voted);
+
+  // 当日参加者以外への投票がされているか確認する。
+  let voted_for_absentee_flag = true; // trueだと大丈夫という意味
+  let p_over_voted = p_form_value.filter(
+    function(x) {
+      return p_list.indexOf(x) == -1 && x != ""
+    }
+  )
+  if (p_over_voted.length > 0) voted_for_absentee_flag = false;
+  console.log(p_over_voted);
+  let fg_over_voted = fg_form_value.filter(
+    function(x) {
+      return fg_list.indexOf(x) == -1 && x != ""
+    }
+  )
+  if (fg_over_voted.length > 0) voted_for_absentee_flag = false;
+  console.log(fg_over_voted);
+
+  // 投票人数チェック(旧: 間違った名前が入力されているかのチェック)
   var count_p_num = 0;
   for(let i = 0; i < p_num; i++){
     if(p_form_value[i] != "") {
@@ -212,65 +289,73 @@ async function btn_send(){
       count_fg_num += 1;
     }
   }
-  
-  var p_num_check = false;
-  var p_flag_sum = 0;
-  p_flag.forEach(function(value) {
-    p_flag_sum += value;
-  })
-  if(p_flag_sum == count_p_num) {
-    p_num_check = true;
-  }
 
-  var fg_num_check = false;
-  var fg_flag_sum = 0;
-  fg_flag.forEach(function(value) {
-    fg_flag_sum += value;
-  })
-  if(fg_flag_sum == count_fg_num) {
-    fg_num_check = true;
+  let p_num_check = false;
+  if (count_p_num == p_list.length) p_num_check = true;
+  let fg_num_check = false;
+  if (count_fg_num == fg_list.length) fg_num_check = true;
+
+  // 1位を抜かして2位を投票してるてきなのをチェック
+  let skip_flag = true; // スキップしてなければtrue
+  for(let i=0; i<p_num-1; i++) {
+    if (p_form_value[i] == "" && p_form_value[i+1] != "") {
+      skip_flag = false;
+      break;
+    }
+  }
+  for(let i=0; i<fg_num-1; i++) {
+    if (fg_form_value[i] == "" && fg_form_value[i+1] != "") {
+      skip_flag = false;
+      break;
+    }
   }
   
-  //再投票を禁止する（既にfirebaseに自分が投票したデータが有る場合は送信できなくする） 
-  //ここで投票済みの人物のリストを作り、下のif文内のvoters_list.indexOf(selfID)<0で投票済みかをチェックする
-  voters_list = [];
-  await checkRevote();
-  
-  if(p_form_value.indexOf(selfID) < 0 && fg_form_value.indexOf(selfID) < 0 && 
-     multipleCheck <= 0 && p_num_check && fg_num_check && count_p_num != 0 && 
-     count_fg_num != 0 && voters_list.indexOf(selfID) < 0){
-    //各フォームのデータを成形してfirebaseに送信
-    for(let i = 0; i < p_num; i++){
-      if(p_form_value[i] != "") {
-        var p_voteData = {
-          votersId: dictMap2.get(selfID),
-          votedId: dictMap2.get(p_form_value[i]),
-          voteRank: i+1,
-          role: "Presentor",
-        };
-        await addVoteData(p_voteData);
-      }
-    }
-    for(let i = 0; i < fg_num; i++){
-      if(fg_form_value[i] != ""){
-        var fg_voteData = {
-          votersId: dictMap2.get(selfID),
-          votedId: dictMap2.get(fg_form_value[i]),
-          voteRank: i+1,
-          role: "Facilitator",
-        };
-        await addVoteData(fg_voteData);
-      }
-    }
+  if(p_form_value.indexOf(selfID) < 0 && fg_form_value.indexOf(selfID) < 0) {
+    if (multipleCheck <= 0 && p_num_check && fg_num_check && count_p_num != 0 && count_fg_num != 0
+        && p_fg_exact_flag && voted_for_absentee_flag && skip_flag) {
+      if (voters_list.indexOf(selfID) < 0){
+        //各フォームのデータを成形してfirebaseに送信
+        for(let i = 0; i < p_num; i++){
+          if(p_form_value[i] != "") {
+            var p_voteData = {
+              votersId: dictMap2.get(selfID),
+              votedId: dictMap2.get(p_form_value[i]),
+              voteRank: i+1,
+              role: "Presentor",
+            };
+            await addVoteData(p_voteData);
+          }
+        }
+        for(let i = 0; i < fg_num; i++){
+          if(fg_form_value[i] != ""){
+            var fg_voteData = {
+              votersId: dictMap2.get(selfID),
+              votedId: dictMap2.get(fg_form_value[i]),
+              voteRank: i+1,
+              role: "Facilitator",
+            };
+            await addVoteData(fg_voteData);
+          }
+        }
 
-    //投票結果画面へ遷移
-    var move = function(){
-      window.location.href = "result.html"
-    } 
-    setTimeout(move, 1200);
+        //投票結果画面へ遷移
+        var move = function(){
+          window.location.href = "result.html"
+        } 
+        setTimeout(move, 1200);
+      }else{
+        const checks = document.getElementsByClassName('check');
+        checks[0].innerHTML = "再投票している可能性があります。<BR>投票し直したい場合は、システム管理者に連絡してください。";
+        //alert('自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。');
+      }
+    }else{
+      const checks = document.getElementsByClassName('check');
+      checks[0].innerHTML = "投票先を間違えている可能性があります。投票候補を見て、すべての候補に正しく投票してください。";
+      //alert('自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。');
+    }
   }else{
     const checks = document.getElementsByClassName('check');
-    checks[0].innerHTML = "自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。";
+    checks[0].innerHTML = "自分の名前を投票している可能性があります。自分は投票候補から除いてください。";
     //alert('自分の名前や間違った名前、同じ名前を複数個入力している可能性があります。');
   }
 }
@@ -365,7 +450,8 @@ async function predict(thisInput,thisUl){
 
 
 // 6秒ごとに自分の最終ログイン状態をアップデート
-setInterval(function(){return showParticipant(db)}, 6*1000);
+// setInterval(function(){return showParticipant(db)}, 6*1000);
+setInterval(function(){return showRole(db)}, 6*1000);
 
 // 10秒ごとに自分の最終ログイン状態をアップデート
 setInterval(function(){return updateStatus(db, getTodayTimestamp())}, 10*1000);
@@ -376,5 +462,47 @@ setInterval(function(){return loggedin2(firebase)}, 30*1000);
 function PageLoad(){
   console.log("page loaded");
   loggedin2(firebase);
-  showParticipant(db);
-};
+  let flag = 0;
+  let getlen = new Promise((resolve, reject) => {
+    db.collection('todays_role').doc(getTodayTimestamp().toString()).get().then(function(doc) {
+      if (doc.data() != undefined) {
+        for(let i = 0; i < Object.keys(doc.data()).length; i++){
+          if(Object.keys(doc.data())[i] == selfID){
+            flag = 1;
+          }
+        }  
+      }
+    }).then(() => {
+      if(flag == 0){
+        window.location.href = './role_select.html';
+      }
+    })
+    resolve();
+  });
+  // showshowParticipant(db);
+  
+  // 役割を表示する
+  showRole(db);
+
+  // 全員がログインできたらボタンを押し、firebaseに情報を送る
+  let login_completed_button = document.getElementById('login_completed');
+  login_completed_button.addEventListener('click', function() {
+    db.collection('login_completed').doc(getTodayTimestamp().toString()).set({
+      completed: 'OK'
+    });
+    
+  }, false);
+
+  // firebaseを監視し、全員がログインできたことを感知したら、チェックボックスを押せるようにし、フルダウンメニューの候補を作成する
+  db.collection('login_completed').doc(getTodayTimestamp().toString()).onSnapshot((doc) => {
+    if(doc.exists){
+      for(let i = 1; i <= 5; i++){
+        document.getElementById('check_p' + i.toString()).disabled = false;
+      }
+      for(let i = 1; i <= 3; i++){
+        document.getElementById('check_fg' + i.toString()).disabled = false;
+      }
+      createCandidate(db);
+    }       
+  });
+}

@@ -1,13 +1,8 @@
 /*投票画面のcssファイル*/
 
-.wrapper {
-  width: 800px;
-  padding: 5px;
-  background-color: #FFFFFF;
-  margin: 0 auto;
-}
+/* flexbox参考: https://www.webcreatorbox.com/tech/css-flexbox-cheat-sheet */
 
-.pred {
+/* .pred {
   position: absolute;
   background-color: rgba(255,255,255,0.7);
   width: 100px;
@@ -15,59 +10,97 @@
   margin-left: 20pt;
   z-index: 10;
   
+} */
+
+h1 {
+  text-align: center;
 }
 
-
-.title {
-  background-color: #00BFFF;
-  height: 60px;
-  font-size: 30pt;
-  color: #FFFFFF;
-  margin-top: 30px;
-  margin-bottom: 5px;
+h3 {
   text-align: center;
+}
+
+#role_list {
+  text-align: center;
+  margin: 40px 0px;
+}
+
+.p_container {
+  /* height: 480px; */
+  display: flex;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.fg_container {
+  /* height: 480px; */
+  display: flex;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.g_containter {
+  width: 50%;
 }
 
 .p_title {
-  background-color: #FFCCCC;
-  width: 70%;
-  margin-bottom: 5px;
-  margin-right: 8px;
-  /*border: solid 1px #0099FF;*/
-  float: left;
-  text-align: center;
+  color: #F19E65;
   font-size: 25px;
 }
 
 .fg_title {
-  background-color: #90EE90;
-  width: 70%;
-  margin-bottom: 5px;
-  margin-right: 8px;
-  /*border: solid 1px #0099FF;*/
-  float: left;
-  text-align: center;
+  color: #4472C4;
   font-size: 25px;
 }
 
-.p_vote_title {
-  background-color: #FFCCCC;
-  width: 29%;
-  margin-bottom: 5px;
-  /*border: solid 1px #0099FF;*/
-  float: left;
-  text-align: center;
+.g_title {
+  color: #696969;
   font-size: 25px;
 }
 
-.fg_vote_title {
-  background-color: #90EE90;
-  width: 29%;
-  margin-bottom: 5px;
-  /*border: solid 1px #0099FF;*/
-  float: left;
+.p {
+  background-color: #F8CBAD;
+}
+
+.fg {
+  background-color: #B4C7E7;
+}
+
+.g {
+  background-color: #AFABAB;
+}
+
+#list {
+  vertical-align: middle;
+}
+
+.vote-list {
+  flex-basis: 15%;
+  padding: 5px 10px;
+  border-radius: 20px;        /* CSS3草案 */  
+    -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 20px;   /* Firefox用 */
   text-align: center;
-  font-size: 25px;
+}
+
+.explain {
+  flex-basis: 55%;
+  padding: 5px 20px;
+  border-radius: 20px;        /* CSS3草案 */  
+    -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 20px;   /* Firefox用 */
+}
+
+.vote {
+  flex-basis: 15%;
+  padding: 5px 10px;
+  border-radius: 20px;        /* CSS3草案 */  
+    -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 20px;   /* Firefox用 */
 }
 
 .p_explain, .p_vote, .fg_explain, .fg_vote {
@@ -170,13 +203,13 @@ div.column {
   float: left;
 }
 
-#submit_vote {
+/* #submit_vote {
   margin-top: 5px;
   float: right;
   width: 100%;
   height: 50px;
   font-size: 10pt;
-}
+} */
 
 label, input[type='checkbox'] {
     cursor: pointer;
@@ -185,5 +218,27 @@ label, input[type='checkbox'] {
 div.check {
   color: red;
   font-size: 25px;
-  text-aling: center !important;
+  text-align: center !important;
 }
+
+#login_completed_wrapper {
+  text-align: center;
+}
+
+#submit_vote_wrapper {
+  text-align: center;
+}
+
+button {
+  width: 100%;
+  height: 50px;
+  border-radius: 20px;        /* CSS3草案 */  
+  -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+  -moz-border-radius: 20px;   /* Firefox用 */
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+button:hover {
+  opacity: 0.6;
+}  

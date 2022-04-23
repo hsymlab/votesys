@@ -1,0 +1,16 @@
+
+body {
+	background-color: #D0CECE;
+	color: #203864;
+}
+
+.wrapper {
+	background-color: #ffffff;
+	width: 960px;
+	margin: 0 auto;
+	padding: 50px;
+
+	border-radius: 20px;        /* CSS3草案 */  
+    -webkit-border-radius: 20px;    /* Safari,Google Chrome用 */  
+    -moz-border-radius: 20px;   /* Firefox用 */
+}

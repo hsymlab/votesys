@@ -1,3 +1,53 @@
+// 改修で作成したコードはここから
+
+async function showRole(databaseObj) {
+  let todaysRole = await getTodaysRole(databaseObj);
+  let p_rolelist = '';
+  let fg_rolelist = '';
+  let guest_rolelist = '';
+  for(let i = 0; i < Object.keys(todaysRole).length; i++){
+    if(todaysRole[Object.keys(todaysRole)[i]] == 'Presenter'){
+      p_rolelist += Object.keys(todaysRole)[i] + '<br>';
+    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator'){
+      fg_rolelist += Object.keys(todaysRole)[i] + '<br>';
+    }else{
+      guest_rolelist += Object.keys(todaysRole)[i] + '<br>';
+    }
+  }
+  document.getElementById('p_list').innerHTML = p_rolelist;
+  document.getElementById('fg_list').innerHTML = fg_rolelist;
+  document.getElementById('g_list').innerHTML = guest_rolelist;
+}
+
+async function getTodaysRole(databaseObj) {
+  var docPath = "todays_role/" + getTodayTimestamp().toString() + "/";
+  var data = await getDataFromDB(databaseObj, docPath);
+  return data;
+}
+
+async function createCandidate(databaseObj) {
+  let todaysRole = await getTodaysRole(databaseObj);
+  let p_candidatelist = '<option></option>';
+  let fg_candidatelist = '<option></option>';
+  for(let i = 0; i < Object.keys(todaysRole).length; i++){
+    if(todaysRole[Object.keys(todaysRole)[i]] == 'Presenter' && Object.keys(todaysRole)[i] != selfID){
+      p_candidatelist += '<option>' + Object.keys(todaysRole)[i] + '</option>';
+    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator' && Object.keys(todaysRole)[i] != selfID){
+      fg_candidatelist += '<option>' + Object.keys(todaysRole)[i] + '</option>';
+    }
+  }
+  for(let i = 1; i <= p_num; i++){
+    document.getElementById('p' + i.toString()).innerHTML = p_candidatelist;
+  }
+  for(let i = 1; i <= p_num; i++){
+    document.getElementById('fg' + i.toString()).innerHTML = fg_candidatelist;
+  }
+
+  document.getElementById('login_completed').disabled = true;
+}
+
+// ここまで
+
 async function showParticipant(databaseObj) {
   var todaysPerticipants = await getTodaysParticipants(databaseObj);
   //console.log("test",todaysPerticipants);
@@ -245,6 +295,7 @@ function getUserName(databaseObj, docPath) {
       if (doc.exists) {
         var docData = doc.data();
         selfID = docData[login_user_email];
+        document.getElementById('myname').innerHTML = selfID;
         console.log("Login user's name (selfID):", selfID);
       } else {
         console.log("No such email!");

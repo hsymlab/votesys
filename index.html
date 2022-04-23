@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- import -->
     <title>投票画面</title>
+    <link rel="stylesheet" href="./common.css" />
     <link rel="stylesheet" href="./vote.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link
@@ -33,152 +34,142 @@
 
   <body onload="PageLoad()">
     
-    <h1>論文ゼミ投票システム</h1>
-    <p id="greeting">
-    <br><br><br><br><br>
-    </p>
-    <div class="check"></div>
     <div class="wrapper">
-      <div class="title"><b>■投票画面■</b></div>
+      <h1>投票</h1>
+      <!-- <p id="greeting">
+      <br><br><br><br><br>
+      </p> -->
+      <!-- <div id="role_list">
+        <div>
+          <h3>Presenter</h3>
+          <p id="p_list2"></p>
+        </div>
+        <div>
+          <h3>Facilitator&Graphicer</h3>
+          <p id="fg_list2"></p>
+        </div>
+        <div>
+          <h3>Guest</h3>
+          <p id="guest_list"></p>
+        </div>
+        <button id="login_completed">全員ログイン完了</button>
+      </div> -->
+
+      <!-- <div class="title"><b>■投票画面■</b></div> -->
       
-      <div class="p_title">Presenter</div>
-      <div class="p_vote_title">RANK</div>
+      <h1 class="p_title">Presenter</h1>
+      <div class="p_container">
+        <div class="p vote-list">
+          <h3>候補</h3>
+          <p class="list" id="p_list"></p>
+        </div>
+        <div class="p explain">
+          <h3>評価基準</h3>
+          <label>
+            <input type="checkbox" class="p_checkbox" id="check_p1" onclick="connecttext(text_p_list, check_p_list);" disabled/>
+            <!-- 制限時間が守られていたか（過ぎた後，発表を続けていないか）<br> -->
+            <b>制限時間</b>が守られていたか<br />
+          </label>
 
-      <div class="p_explain">
-        <label>
-          <input type="checkbox" class="p_checkbox" id="check_p1" onclick="connecttext(text_p_list, check_p_list);"/>
-          <!-- 制限時間が守られていたか（過ぎた後，発表を続けていないか）<br> -->
-          <b>制限時間</b>が守られていたか<br />
-        </label>
+          <label>
+            <input type="checkbox" class="p_checkbox" id="check_p2" onclick="connecttext(text_p_list, check_p_list);" disabled/>
+            <!-- 意見・質問に対して，根拠ある返答がはっきりとなされていたか<br>-->
+            <b>意見・質問に対する回答</b>がしっかりしていたか<br />
+          </label>
 
-        <label>
-          <input type="checkbox" class="p_checkbox" id="check_p2" onclick="connecttext(text_p_list, check_p_list);"/>
-          <!-- 意見・質問に対して，根拠ある返答がはっきりとなされていたか<br>-->
-          <b>意見・質問に対する回答</b>がしっかりしていたか<br />
-        </label>
+          <label>
+            <input type="checkbox" class="p_checkbox" id="check_p3" onclick="connecttext(text_p_list, check_p_list);" disabled/>
+            <!-- 発表内容に対して興味深いと思える点が1つでもあったか<br>-->
+            発表内容に対して<b>興味深いと思える点</b>が1つでもあったか<br />
+          </label>
 
-        <label>
-          <input type="checkbox" class="p_checkbox" id="check_p3" onclick="connecttext(text_p_list, check_p_list);"/>
-          <!-- 発表内容に対して興味深いと思える点が1つでもあったか<br>-->
-          発表内容に対して<b>興味深いと思える点</b>が1つでもあったか<br />
-        </label>
+          <label>
+            <input type="checkbox" class="p_checkbox" id="check_p4" onclick="connecttext(text_p_list, check_p_list);" disabled/>
+            <!-- 発表者の態度を心がけていたか（例．貧乏ゆすり・うつむき・表情）<br>-->
+            <b>発表態度</b>は良かったか、<b>声の大きさ</b>と<b>抑揚</b><br />
+          </label>
 
-        <label>
-          <input type="checkbox" class="p_checkbox" id="check_p4" onclick="connecttext(text_p_list, check_p_list);"/>
-          <!-- 発表者の態度を心がけていたか（例．貧乏ゆすり・うつむき・表情）<br>-->
-          <b>発表態度</b>は良かったか、<b>声の大きさ</b>と<b>抑揚</b><br />
-        </label>
-
-        <!--
-        <input type="checkbox" class="p_checkbox" id="check_p5">
-        <!-- 声が大きく，抑揚がついていたか<br>
-        <b>声の大きさ</b>と<b>抑揚</b><br>-->
-        <label>
-          <input type="checkbox" class="p_checkbox" id="check_p5" onclick="connecttext(text_p_list, check_p_list);"/>
-          <!-- 話にリズム・キレ・ストーリー性があったか<br>-->
-          話に<b>リズム・キレ・ストーリー性</b>があったか<br />
-        </label>
-      </div>
-      <!--下記から必要なものを色々追加しました-->
-      <!--onkeyup=""で入力を逐一確認し、addvalue(this)を実行している(thisでinputの要素を受け取り)-->
-      <!--autocompleteで予測変換を実装できるようにする-->
-      <!--listでそれぞれのリストの指定-->
-      <!--datalistが予測変換の際のリストを入れる場所(中のリストはリアルタイムで追加)-->
-      <div class="p_vote">
-        <form name="p_form">
-          
-          <span id="input_p_forms"></span>
+          <!--
+          <input type="checkbox" class="p_checkbox" id="check_p5">
+          <!-- 声が大きく，抑揚がついていたか<br>
+          <b>声の大きさ</b>と<b>抑揚</b><br>-->
+          <label>
+            <input type="checkbox" class="p_checkbox" id="check_p5" onclick="connecttext(text_p_list, check_p_list);" disabled/>
+            <!-- 話にリズム・キレ・ストーリー性があったか<br>-->
+            話に<b>リズム・キレ・ストーリー性</b>があったか<br />
+          </label>
+        </div>
+        <div class="p vote">
+          <h3>順位</h3>
           <script>
-            for(var i=0; i<p_num; i++) {
-              var p_id = "p"+String(i+1);
-              var ul_p_id = "ul_p"+String(i+1);
-              
-              $('<div class="rank_num">').html(`
-                  ${i+1}位
-                  <input
-                    id="${p_id}"
-                    type="text"
-                    maxlength="10"
-                    onfocus='predict("${p_id}", "${ul_p_id}")'
-                    autocomplete="off"
-                    disabled
-                  />
-                  <div class="pred" id="${ul_p_id}"></div>
-              `).appendTo("#input_p_forms");
+            for(let i = 1; i <= p_num; i++){
+              document.write('<p>' + i.toString() + '位 <select id="p' + i.toString() + '" disabled></select></p>');
             }
           </script>
-          
-        </form>
+        </div>
       </div>
 
-      <div class="fg_title">Facilitator & Graphics</div>
-      <div class="fg_vote_title">RANK</div>
-
-      <div class="fg_explain">
-        <label>
-          <input type="checkbox" class="fg_checkbox" id="check_fg1" onclick="connecttext(text_fg_list, check_fg_list);"/>
-          <!-- 意見（「発表」を含む）の整理ができていたか<br>
-          （例．発言の補足のための深掘り・見やすいグラフィック（色，字，文，絵）・意見の書き出し）<br>-->
-          発表内容や意見の<b>整理</b>、<b>グラフィックの見やすさ</b><br />
-        </label>
-
-        <label>
-          <input type="checkbox" class="fg_checkbox" id="check_fg2" onclick="connecttext(text_fg_list, check_fg_list);"/>
-          <!-- 場に対して，討論が発生するような問題（議題）提起ができていたか<br>-->
-          場に対して，討論が発生するような<b>問題（議題）提起</b>ができていたか<br />
-        </label>
-
-        <label>
-          <input type="checkbox" class="fg_checkbox" id="check_fg3" onclick="connecttext(text_fg_list, check_fg_list);"/>
-          <!-- 討論の切れ目が見極められていたか<br>
-          （グラフィックにおいて，フレームワークが活用できていたか）<br>-->
-          <b>ファシリテート</b>はしっかり行えていたか<br />
-        </label>
-      </div>
-
-      <!--下記から必要なものを色々追加しました-->
-      <!--onkeyup=""で入力を逐一確認し、addvalue(this)を実行している(thisでinputの要素を受け取り)-->
-      <!--autocompleteで予測変換を実装できるようにする-->
-      <!--listでそれぞれのリストの指定-->
-      <!--datalistが予測変換の際のリストを入れる場所(中のリストはリアルタイムで追加)-->
-      <div class="fg_vote">
-        <form name="fg_form">
-          
-          <span id="input_fg_forms"></span>
+      <h1 class="fg_title">Facilitator & Graphicer</h1>
+      <div class="fg_container">
+        <div class="fg vote-list">
+          <h3>候補</h3>
+          <p class="list" id="fg_list"></p>
+        </div>
+        <div class="fg explain">
+          <h3>評価基準</h3>
+          <label>
+            <input type="checkbox" class="fg_checkbox" id="check_fg1" onclick="connecttext(text_fg_list, check_fg_list);" disabled/>
+            <!-- 意見（「発表」を含む）の整理ができていたか<br>
+            （例．発言の補足のための深掘り・見やすいグラフィック（色，字，文，絵）・意見の書き出し）<br>-->
+            発表内容や意見の<b>整理</b>、<b>グラフィックの見やすさ</b><br />
+          </label>
+  
+          <label>
+            <input type="checkbox" class="fg_checkbox" id="check_fg2" onclick="connecttext(text_fg_list, check_fg_list);" disabled/>
+            <!-- 場に対して，討論が発生するような問題（議題）提起ができていたか<br>-->
+            場に対して，討論が発生するような<b>問題（議題）提起</b>ができていたか<br />
+          </label>
+  
+          <label>
+            <input type="checkbox" class="fg_checkbox" id="check_fg3" onclick="connecttext(text_fg_list, check_fg_list);" disabled/>
+            <!-- 討論の切れ目が見極められていたか<br>
+            （グラフィックにおいて，フレームワークが活用できていたか）<br>-->
+            <b>ファシリテート</b>はしっかり行えていたか<br />
+          </label>
+        </div>
+  
+        <!--下記から必要なものを色々追加しました-->
+        <!--onkeyup=""で入力を逐一確認し、addvalue(this)を実行している(thisでinputの要素を受け取り)-->
+        <!--autocompleteで予測変換を実装できるようにする-->
+        <!--listでそれぞれのリストの指定-->
+        <!--datalistが予測変換の際のリストを入れる場所(中のリストはリアルタイムで追加)-->
+        <div class="fg vote">
+          <h3>順位</h3>
           <script>
-            for(var i=0; i<fg_num; i++) {
-              var fg_id = "fg"+String(i+1);
-              var ul_fg_id = "ul_fg"+String(i+1);
-              
-              $('<div class="rank_num">').html(`
-                  ${i+1}位
-                  <input
-                    id="${fg_id}"
-                    type="text"
-                    maxlength="10"
-                    onfocus='predict("${fg_id}", "${ul_fg_id}")'
-                    autocomplete="off"
-                    disabled
-                  />
-                  <div class="pred" id="${ul_fg_id}"></div>
-              `).appendTo("#input_fg_forms");
+            for(let i = 1; i <= fg_num; i++){
+              document.write('<p>' + i.toString() + '位 <select id="fg' + i.toString() + '" disabled></select></p>');
             }
           </script>
-          
-        </form>
+        </div>
       </div>
-      <form name="send">
-        <input
-          type="button"
-          id="submit_vote"
-          value="送信"
-          onclick="btn_send()"
-          disabled
-        />
-      </form>
+      <!-- <form name="send"> -->
+      
+      <h1 class="g_title">Guest</h1>
+      <div class="g_container">
+        <div class="g vote-list">
+          <p class="list" id="g_list"></p>
+        </div>
+      </div>
+      
+      <button id="login_completed">全員がログイン完了</button>
 
+      <div class="check"></div>
+
+      <button id="submit_vote" onclick="btn_send()" disabled>送信</button>
+
+      <br><br><br>
       <!-- 入力フォームの数に応じて背景の高さを自動で変更 -->
-      <script>
+      <!-- <script>
         function isSmartPhone() {
           if (window.matchMedia && window.matchMedia('(max-device-width: 640px)').matches) {
             return true;
@@ -201,12 +192,9 @@
           }
           $(".p_explain, .p_vote, .fg_explain, .fg_vote").css("height", String(back_height)+"px");
         }
-      </script>
+      </script> -->
       
     </div>
-    <br>
-    <br>
-    <br>
 <!--<a href="/result.html">結果画面</a> -->
   </body>
 </html>

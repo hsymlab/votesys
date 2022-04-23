@@ -7,6 +7,7 @@
     <!-- import -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     
+    <link rel="stylesheet" href="./common.css" />
     <link rel="stylesheet" href="./result.css" />
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.0.0/firebase-app.js"></script>
@@ -23,11 +24,12 @@
   </head>
 
   <body>
-    <h1>結果だよ</h1>
     <!--Div that will hold the pie chart-->
-    <div class="container">
-      <div id="chart_div"></div>
-      <div id="chart_div2"></div>
+    <div class="wrapper">
+      <h1>結果</h1>
+      <div class="image" id="chart_div"></div>
+      <br />
+      <div class="image" id="chart_div2"></div>
     </div>
   </body>
 </html>
