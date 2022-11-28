@@ -32,7 +32,7 @@ async function drawAllChart(data) {
     table[0].push(votersId);
     for (let votedId in voteData[votersId]) {
       //プレゼンターだった場合
-      if (voteData[votersId][votedId]["role"] == "Presentor") {
+      if (voteData[votersId][votedId]["role"] == "Presentr") {
         //その名前が連想配列内にあるかどうか
         if (presentorResult.has(votedId)) {
           presentorResult
@@ -105,7 +105,7 @@ async function drawChart(result, locate) {
   const data = google.visualization.arrayToDataTable(table);
 
   const options = {
-    title: locate == "chart_div" ? "Presentor" : "Facilitator",
+    title: locate == "chart_div" ? "Presenter" : "Facilitator",
     titleTextStyle: { fontName: "Meiryo UI", fontSize: 30 },
     width: 600,
     height: 400,
