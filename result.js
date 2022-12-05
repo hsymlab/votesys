@@ -32,7 +32,7 @@ async function drawAllChart(data) {
     table[0].push(votersId);
     for (let votedId in voteData[votersId]) {
       //プレゼンターだった場合
-      if (voteData[votersId][votedId]["role"] == "Presentr") {
+      if (voteData[votersId][votedId]["role"] == "Presenter") {
         //その名前が連想配列内にあるかどうか
         if (presentorResult.has(votedId)) {
           presentorResult
