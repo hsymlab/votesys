@@ -1,6 +1,6 @@
 //投票画面のjsファイル
 /*-------------------------------*/
-let Year = 2022;
+let Year = 2023;
 
 //このリストは予測候補と入力時の名前のエラーチェックと再投票防止に使います。
 //毎年更新をお願いします。
@@ -24,7 +24,13 @@ var name_list = {
   'Deguchi':['出口','Deguchi','deguchi','デグチ','でぐち'],
   'Higashikawa':['東川','Higashikawa','higashikawa','ヒガシカワ','ひがしかわ'],
   'Nagai':['永井','Nagai','nagai','ナガイ','ながい'],
-  'Shiraishi':['白石','Shiraishi','shiraishi','シライシ','しらいし']
+  'Shiraishi':['白石','Shiraishi','shiraishi','シライシ','しらいし'],
+  'Ohara':['小原','Ohara','ohara','オハラ','おはら'],
+  'Niiduma':['新妻','Niiduma','niiduma','ニイヅマ','にいづま'],
+  'Hosokawa':['細川','Hosokawa','hosokawa','ホソカワ','ほそかわ'],
+  'Yanagiya':['柳谷','Yanagiya','yanagiya','ヤナギヤ','やなぎや'],
+  'Takeda':['武田','Takeda','takeda','タケダ','たけだ'],
+  'Yoshioka':['吉岡','Yoshioka','yoshioka','ヨシオカ','よしおか'],
 };
 
 //PとFGの人数(ここを変更すると入力フォームの数が変わります)
