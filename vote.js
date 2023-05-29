@@ -26,7 +26,7 @@ var name_list = {
   'Nagai':['永井','Nagai','nagai','ナガイ','ながい'],
   'Shiraishi':['白石','Shiraishi','shiraishi','シライシ','しらいし'],
   'Ohara':['小原','Ohara','ohara','オハラ','おはら'],
-  'Niiduma':['新妻','Niitsuma','niitsuma','ニイツマ','にいつま'],
+  'Niitsuma':['新妻','Niitsuma','niitsuma','ニイツマ','にいつま'],
   'Hosokawa':['細川','Hosokawa','hosokawa','ホソカワ','ほそかわ'],
   'Yanagiya':['柳谷','Yanagiya','yanagiya','ヤナギヤ','やなぎや'],
   'Takeda':['武田','Takeda','takeda','タケダ','たけだ'],
