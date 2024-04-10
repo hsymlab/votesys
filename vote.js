@@ -1,36 +1,28 @@
 //投票画面のjsファイル
 /*-------------------------------*/
-let Year = 2023;
+let Year = 2024;
 
 //このリストは予測候補と入力時の名前のエラーチェックと再投票防止に使います。
 //毎年更新をお願いします。
 var name_list = {
   'Ghita':['Ghita','Ghita','ghita','ギータ','ぎーた'],
   'Matsubara':['松原','Matsubara','matsubara','マツバラ','まつばら'],
-  'Ogino':['荻野','Ogino','ogino','オギノ','おぎの'],
-  'Ikeda':['池田','Ikeda','ikeda','イケダ','いけだ'],
-  'Maemoto':['前本','Maemoto','maemoto','マエモト','まえもと'],
-  'Sakamoto':['坂元','Sakamoto','sakamoto','サカモト','さかもと'],
-  'Ni':['倪','Ni','ni','ニー','にー'],
-  'Gotou':['後藤','Gotou','gotou','ゴトウ','ごとう'],
-  'Kobayashi':['小林','Kobayashi','kobayashi','コバヤシ','こばやし'],
-  'Ueda':['植田','Ueda','ueda','ウエダ','うえだ'],
-  'Ogawa':['小川','Ogawa','ogawa','オガワ','おがわ'],
-  'Sasakawa':['笹川','Sasakawa','sasakawa','ササカワ','ささかわ'],
-  'Tsutsumi':['堤','Tsutsumi','tsutsumi','ツツミ','つつみ'],
-  'Hayashi':['林','Hayashi','hayashi','ハヤシ','はやし'],
   'Natori':['名執','Natori','natori','ナトリ','なとり'],
   'Hashiyama':['橋山','Hashiyama','hashiyama','ハシヤマ','はしやま'],
   'Deguchi':['出口','Deguchi','deguchi','デグチ','でぐち'],
   'Higashikawa':['東川','Higashikawa','higashikawa','ヒガシカワ','ひがしかわ'],
-  'Nagai':['永井','Nagai','nagai','ナガイ','ながい'],
   'Shiraishi':['白石','Shiraishi','shiraishi','シライシ','しらいし'],
   'Ohara':['小原','Ohara','ohara','オハラ','おはら'],
   'Niitsuma':['新妻','Niitsuma','niitsuma','ニイツマ','にいつま'],
   'Hosokawa':['細川','Hosokawa','hosokawa','ホソカワ','ほそかわ'],
   'Yanagiya':['柳谷','Yanagiya','yanagiya','ヤナギヤ','やなぎや'],
   'Takeda':['武田','Takeda','takeda','タケダ','たけだ'],
-  'Yoshioka':['吉岡','Yoshioka','yoshioka','ヨシオカ','よしおか'],
+  'Nakata':['中田','Nakata','nakata','ナカタ','なかた'],
+  'Yang':['杨','Yang','yang','ヤン','やん'],
+  'Kanno':['菅野','Kanno','kanno','カンノ','かんの'],
+  'Tanaka':['田中','Tanaka','tanaka','タナカ','たなか'],
+  'Endo':['遠藤','Endo','endo','エンドウ','えんどう'],
+  'Saito':['斉藤','Saito','saito','サイトウ','さいとう'],
 };
 
 //PとFGの人数(ここを変更すると入力フォームの数が変わります)
