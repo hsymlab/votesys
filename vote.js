@@ -480,6 +480,9 @@ function PageLoad(){
   });
   // showshowParticipant(db);
   
+  // 欠席者の初期化、表示を行う
+  initAbsent()
+  
   // 役割を表示する
   showRole(db);
 

@@ -5,19 +5,26 @@ async function showRole(databaseObj) {
   let p_rolelist = '';
   let fg_rolelist = '';
   let guest_rolelist = '';
+  let absentees = [];
+
   for(let i = 0; i < Object.keys(todaysRole).length; i++){
     if(todaysRole[Object.keys(todaysRole)[i]] == 'Presenter'){
       p_rolelist += Object.keys(todaysRole)[i] + '<br>';
     }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator'){
       fg_rolelist += Object.keys(todaysRole)[i] + '<br>';
-    }else{
+    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Guest'){
       guest_rolelist += Object.keys(todaysRole)[i] + '<br>';
+    }else{
+      absentees.append(Object.keys(todaysRole)[i])
     }
   }
+  
   document.getElementById('p_list').innerHTML = p_rolelist;
   document.getElementById('fg_list').innerHTML = fg_rolelist;
   document.getElementById('g_list').innerHTML = guest_rolelist;
+  $('#absent_selectbox').val(absentees).trigger("change"); 
 }
+
 
 async function getTodaysRole(databaseObj) {
   var docPath = "todays_role/" + getTodayTimestamp().toString() + "/";
@@ -306,4 +313,52 @@ function getUserName(databaseObj, docPath) {
       console.log("Error getting document:", error);
       return "";
     });
+}
+
+
+// 欠席者の追加
+async function addAbsentee(){
+  console.log("addAbsentee()")
+  // 【不要になったら削除】以下の２つがないことでsekfIDがなかったり、ログインしたことになっていないので、firebaseが少し不安
+  // loggedin2(firebase);
+  // getUserName(db,'/user_name/'+String(Year));
+  let selectedName = this.value;
+  console.log(selectedName)
+  var selectedValues = $('#absent_selectbox').val();
+  console.log(selectedValues)
+  db.collection('todays_absent').doc(getTodayTimestamp().toString()).set({
+    selectedName: "absent"
+  },{merge:true}).then(function() {
+    // 要素が選択されているならばfirebaseへの追加が失敗しているので欠席者としての扱いを解除する
+    if(selectedName in selectedValues){
+      $('#absent_selectbox').val(selectedName).trigger('change');
+    }
+  }).then()
+  .catch();
+}
+
+function initAbsent(){
+  // Select2の初期化
+  $(document).ready(function() {
+    $('#absent_selectbox').select2();
+  });
+  // 設定
+  $('#absent_selectbox').select2({
+    multiple: true, // 複数選択可能
+    allowClear: true, // 削除ボタンの追加
+  });
+  
+  // console.log(option)
+  // 選択できるリストの作成
+  Object.keys(name_list).forEach(name =>{
+    const option_name = new Option(name_list[name][0], name_list[name][0]);
+    $('#absent_selectbox').append(option_name);
+  })
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var selectBox = document.getElementById('absent_selectbox');
+    selectBox.addEventListener('change', function() {
+      addAbsentee();
+    });
+  });
 }
