@@ -510,15 +510,14 @@ function PageLoad(){
     // ログインした人、欠席者扱いの人を取得する
     let todaysRole = doc.data()
     let setTodaysRole = new Set(Object.keys(todaysRole))
-      // 欠席者を含むログインした人と基本的に投票に参加する人が一致するかを調べるためにの集合で比較する
-    let participant = new Set(Object.keys(name_list));
+      // 欠席者を含むログインした人と全体ゼミに基本参加する人が一致するかを調べるためにの集合で比較する
+    let baseParticipant = new Set(Object.keys(name_list));
     excluded_name.forEach((name)=>{
-      participant.delete(name);
+      baseParticipant.delete(name);
     })
     
-    // ここで全員が役割のある人(参加者+欠席者)になっているか確認する。
-    // お互い(役割のある人(参加者+欠席者)と全体ゼミ)に部分集合であるかを調べる
-    if(participant.isSubsetOf(setTodaysRole) && setTodaysRole.isSubsetOf(participant)){
+    // 全体ゼミに基本参加する人 < 役割のある人(参加者+欠席者)に部分集合であるかを調べる
+    if(baseParticipant.isSubsetOf(setTodaysRole)){
       // 自動で"login_completed"のステータスをOKにする
       db.collection('login_completed').doc(getTodayTimestamp().toString()).set({
         completed: 'OK'
