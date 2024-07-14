@@ -471,7 +471,8 @@ function PageLoad(){
     db.collection('todays_role').doc(getTodayTimestamp().toString()).get().then(function(doc) {
       if (doc.data() != undefined) {
         for(let i = 0; i < Object.keys(doc.data()).length; i++){
-          if(Object.keys(doc.data())[i] == selfID){
+          // DBに存在するかとその役割が欠席者でないことを調べる。
+          if(Object.keys(doc.data())[i] == selfID && doc.data()[selfID] != "Absent"){
             flag = 1;
           }
         }  
