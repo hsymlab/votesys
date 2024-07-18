@@ -5,19 +5,26 @@ async function showRole(databaseObj) {
   let p_rolelist = '';
   let fg_rolelist = '';
   let guest_rolelist = '';
+  let absentees = [];
+
   for(let i = 0; i < Object.keys(todaysRole).length; i++){
     if(todaysRole[Object.keys(todaysRole)[i]] == 'Presenter'){
       p_rolelist += Object.keys(todaysRole)[i] + '<br>';
     }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Facilitator'){
       fg_rolelist += Object.keys(todaysRole)[i] + '<br>';
-    }else{
+    }else if(todaysRole[Object.keys(todaysRole)[i]] == 'Guest'){
       guest_rolelist += Object.keys(todaysRole)[i] + '<br>';
+    }else{
+      absentees.push(Object.keys(todaysRole)[i])
     }
   }
+  
   document.getElementById('p_list').innerHTML = p_rolelist;
   document.getElementById('fg_list').innerHTML = fg_rolelist;
   document.getElementById('g_list').innerHTML = guest_rolelist;
+  $('#absent_selectbox').val(absentees).trigger("change"); 
 }
+
 
 async function getTodaysRole(databaseObj) {
   var docPath = "todays_role/" + getTodayTimestamp().toString() + "/";
@@ -306,4 +313,67 @@ function getUserName(databaseObj, docPath) {
       console.log("Error getting document:", error);
       return "";
     });
+}
+
+
+// 欠席者の追加
+async function changeAbsentee(event, databaseObj){
+  console.log("changeAbsentee")
+  let selectedName = event.params.data.id;
+  let todaysRole = await getTodaysRole(databaseObj);
+
+  // ログインしている人は他の役職を持っているので欠席者扱いにしない。
+  if(Object.keys(todaysRole).includes(selectedName) && todaysRole[selectedName] != "Absent"){
+    let selectedNameArray = $('#absent_selectbox').val();
+    // ログインしている人なので、選択されている名前から今選択された名前を削除する
+    selectedNameArray.splice(selectedNameArray.indexOf(selectedName))
+    // 選択されているものを更新する
+    $('#absent_selectbox').val(selectedNameArray).trigger('change');
+  }else if(!(Object.keys(todaysRole).includes(selectedName))){
+    // 欠席者として追加
+    db.collection('todays_role').doc(getTodayTimestamp().toString()).set({
+      [selectedName]: "Absent"
+    },{merge:true})
+  }
+}
+
+// 欠席者の削除
+async function deleteAbsentee(event, databaseObj){
+  let selectedName = event.params.data.id;
+  let todaysRole = await getTodaysRole(databaseObj);
+  // firebaseからabsentの記録を消す。
+  if(Object.keys(todaysRole).includes(selectedName) && todaysRole[selectedName] == "Absent"){
+    db.collection("todays_role").doc(getTodayTimestamp().toString()).update({
+      [selectedName]: firebase.firestore.FieldValue.delete()
+    });
+  }
+}
+
+function initAbsent(databaseObj){
+  // Select2の初期化
+  $(document).ready(function() {
+    $('#absent_selectbox').select2();
+  });
+  // 初期設定
+  $('#absent_selectbox').select2({
+    multiple: true, // 複数選択可能
+    allowClear: true, // 削除ボタンの追加
+  });
+
+  // 選択できるリストの作成
+  Object.keys(name_list).forEach(name =>{
+    // 除外リストに含まれていないなら選択肢に追加
+    if(!(excluded_name.includes(name))){
+      // 名前の登録時に大文字から始まる名前でないとうまく動作しない場合があります。
+      const option_name = new Option(name_list[name][0], name_list[name][1]);
+      $('#absent_selectbox').append(option_name);
+    }   
+  })
+  // 欠席者の削除と追加の関数の設定
+  $('#absent_selectbox').on('select2:select',function(event){
+    return changeAbsentee(event, databaseObj)
+  });
+  $('#absent_selectbox').on('select2:unselect',function(event){
+    deleteAbsentee(event, databaseObj)
+  });
 }

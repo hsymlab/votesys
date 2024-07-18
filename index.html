@@ -17,6 +17,10 @@
       rel="stylesheet"
       href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css"
     />
+    <!-- import for Select2.css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <!-- Firebase App is always required and must be first -->
 
     <!-- Add additional services that you want to use -->
@@ -33,9 +37,14 @@
   </head>
 
   <body onload="PageLoad()">
-    
     <div class="wrapper">
       <h1>投票</h1>
+      <!-- 欠席者用 -->
+      <div class="absent_container">
+        <span class="absent_title">欠席者</span> 
+        <select id="absent_selectbox">
+        </select>
+      </div>
       <!-- <p id="greeting">
       <br><br><br><br><br>
       </p> -->
@@ -161,11 +170,11 @@
         </div>
       </div>
       
-      <button id="login_completed">全員がログイン完了</button>
+      <button id="login_completed" class="action_controls_button">全員がログイン完了</button>
 
       <div class="check"></div>
 
-      <button id="submit_vote" onclick="btn_send()" disabled>送信</button>
+      <button id="submit_vote" onclick="btn_send() " disabled class="action_controls_button">送信</button>
 
       <br><br><br>
       <!-- 入力フォームの数に応じて背景の高さを自動で変更 -->

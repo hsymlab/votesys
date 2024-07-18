@@ -25,6 +25,11 @@ var name_list = {
   'Saito':['斉藤','Saito','saito','サイトウ','さいとう'],
 };
 
+//欠席者と参加者から自動で「全員がログイン完了」を発火させるのでname_listに存在して全体ゼミには基本的に参加しない人を追加します。
+//name_listのkeyの部分を書いてください。
+//毎年更新をお願いします。
+var excluded_name = ["Ghita", "Matsubara", "Hashiyama", "Shiraishi"]
+
 //PとFGの人数(ここを変更すると入力フォームの数が変わります)
 //指定した数だけフォームに入力できる & firebaseにデータが送信される、ようにしたいな。
 var p_num = 7;
@@ -466,7 +471,8 @@ function PageLoad(){
     db.collection('todays_role').doc(getTodayTimestamp().toString()).get().then(function(doc) {
       if (doc.data() != undefined) {
         for(let i = 0; i < Object.keys(doc.data()).length; i++){
-          if(Object.keys(doc.data())[i] == selfID){
+          // DBに存在するかとその役割が欠席者でないことを調べる。
+          if(Object.keys(doc.data())[i] == selfID && doc.data()[selfID] != "Absent"){
             flag = 1;
           }
         }  
@@ -480,6 +486,9 @@ function PageLoad(){
   });
   // showshowParticipant(db);
   
+  // 欠席者の初期化、表示を行う
+  initAbsent(db)
+  
   // 役割を表示する
   showRole(db);
 
@@ -492,6 +501,31 @@ function PageLoad(){
     
   }, false);
 
+  // firebaseを監視し、欠席者を除いて全員がログインしたら自動的に「全員がログイン完了」を発火させる
+  db.collection('todays_role').doc(getTodayTimestamp().toString()).onSnapshot((doc) => {
+    // ドキュメントの存在に対するガード。全員がログインしていなくてもここで抜ける
+    if (!doc.exists) {
+      return;
+    }
+    // ログインした人、欠席者扱いの人を取得する
+    let todaysRole = doc.data()
+    let setTodaysRole = new Set(Object.keys(todaysRole))
+      // 欠席者を含むログインした人と全体ゼミに基本参加する人が一致するかを調べるためにの集合で比較する
+    let baseParticipant = new Set(Object.keys(name_list));
+    excluded_name.forEach((name)=>{
+      baseParticipant.delete(name);
+    })
+    
+    // 全体ゼミに基本参加する人 < 役割のある人(参加者+欠席者)に部分集合であるかを調べる
+    if(baseParticipant.isSubsetOf(setTodaysRole)){
+      // 自動で"login_completed"のステータスをOKにする
+      db.collection('login_completed').doc(getTodayTimestamp().toString()).set({
+        completed: 'OK'
+      });
+      document.getElementById('absent_selectbox').disabled = true;
+    }
+  })
+  
   // firebaseを監視し、全員がログインできたことを感知したら、チェックボックスを押せるようにし、フルダウンメニューの候補を作成する
   db.collection('login_completed').doc(getTodayTimestamp().toString()).onSnapshot((doc) => {
     if(doc.exists){
