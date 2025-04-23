@@ -1,28 +1,28 @@
 //投票画面のjsファイル
 /*-------------------------------*/
-let Year = 2024;
+let Year = 2025;
 
 //このリストは予測候補と入力時の名前のエラーチェックと再投票防止に使います。
 //毎年更新をお願いします。
 var name_list = {
   'Ghita':['Ghita','Ghita','ghita','ギータ','ぎーた'],
   'Matsubara':['松原','Matsubara','matsubara','マツバラ','まつばら'],
-  'Natori':['名執','Natori','natori','ナトリ','なとり'],
   'Hashiyama':['橋山','Hashiyama','hashiyama','ハシヤマ','はしやま'],
-  'Deguchi':['出口','Deguchi','deguchi','デグチ','でぐち'],
-  'Higashikawa':['東川','Higashikawa','higashikawa','ヒガシカワ','ひがしかわ'],
   'Shiraishi':['白石','Shiraishi','shiraishi','シライシ','しらいし'],
   'Ohara':['小原','Ohara','ohara','オハラ','おはら'],
-  'Niitsuma':['新妻','Niitsuma','niitsuma','ニイツマ','にいつま'],
   'Hosokawa':['細川','Hosokawa','hosokawa','ホソカワ','ほそかわ'],
   'Yanagiya':['柳谷','Yanagiya','yanagiya','ヤナギヤ','やなぎや'],
   'Takeda':['武田','Takeda','takeda','タケダ','たけだ'],
   'Nakata':['中田','Nakata','nakata','ナカタ','なかた'],
   'Yang':['杨','Yang','yang','ヤン','やん'],
   'Kanno':['菅野','Kanno','kanno','カンノ','かんの'],
-  'Tanaka':['田中','Tanaka','tanaka','タナカ','たなか'],
-  'Endo':['遠藤','Endo','endo','エンドウ','えんどう'],
-  'Saito':['斉藤','Saito','saito','サイトウ','さいとう'],
+  'Shimada':['嶋田','Shimada','shimada','シマダ','しまだ'],
+  'LAI':['頼','Lai','lai','ライ','らい'],
+  'SUN HANQUNG':['孫','Sun Hanqun','sun hanqun','スン','すん'],
+  'WU RUI':['吴','Wu Rui','wu rui','ウー','うー'],
+  'Namae':['生江','Namae','namae','ナマエ','なまえ'],
+  'Akita':['秋田','Akita','akita','アキタ','あきた'],
+  'Moriya':['守屋','Moriya','moriya','モリヤ','もりや'],
 };
 
 //欠席者と参加者から自動で「全員がログイン完了」を発火させるのでname_listに存在して全体ゼミには基本的に参加しない人を追加します。
